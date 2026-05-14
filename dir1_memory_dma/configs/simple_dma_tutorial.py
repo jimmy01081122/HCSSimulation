@@ -49,6 +49,8 @@ binary = sys.argv[1] # 從命令列取得執行檔路徑
 process = Process()
 process.executable = binary
 process.cmd = [binary]
+# 指定系統的工作負載類型（自動偵測是 ARM Linux 等）
+system.workload = SEWorkload.init_compatible(binary)
 system.cpu.workload = process
 system.cpu.createThreads()
 

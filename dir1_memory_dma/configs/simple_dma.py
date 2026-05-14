@@ -28,6 +28,7 @@ binary = sys.argv[1]
 process = Process()
 process.executable = binary
 process.cmd = [binary]
+system.workload = SEWorkload.init_compatible(binary)
 system.cpu.workload = process
 system.cpu.createThreads()
 

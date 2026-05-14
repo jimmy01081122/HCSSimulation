@@ -3,6 +3,20 @@ import m5
 from m5.objects import *
 import sys
 
+class L1Cache(Cache):
+    assoc = 2
+    tag_latency = 2
+    data_latency = 2
+    response_latency = 2
+    mshrs = 4
+    tgts_per_mshr = 20
+
+class L1ICache(L1Cache):
+    is_read_only = True
+
+class L1DCache(L1Cache):
+    pass
+
 # 1. 建立系統
 system = System()
 system.clk_domain = SrcClockDomain(clock = '2GHz', voltage_domain = VoltageDomain())
@@ -33,7 +47,7 @@ system.cpu.dcache.mem_side = system.l2bus.cpu_side_ports
 system.membus = SystemXBar()
 
 # 連接 L2 Bus 到系統總線
-system.l2bus.mem_side = system.membus.cpu_side_ports
+system.l2bus.mem_side_ports = system.membus.cpu_side_ports
 
 # 4. 其他基礎設定
 system.cpu.createInterruptController()
@@ -46,6 +60,7 @@ binary = sys.argv[1]
 process = Process()
 process.executable = binary
 process.cmd = [binary]
+system.workload = SEWorkload.init_compatible(binary)
 system.cpu.workload = process
 system.cpu.createThreads()
 

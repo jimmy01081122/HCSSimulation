@@ -2,6 +2,28 @@ import m5
 from m5.objects import *
 import sys
 
+class L1Cache(Cache):
+    assoc = 2
+    tag_latency = 2
+    data_latency = 2
+    response_latency = 2
+    mshrs = 4
+    tgts_per_mshr = 20
+
+class L1ICache(L1Cache):
+    is_read_only = True
+
+class L1DCache(L1Cache):
+    pass
+
+class L2Cache(Cache):
+    assoc = 8
+    tag_latency = 20
+    data_latency = 20
+    response_latency = 20
+    mshrs = 20
+    tgts_per_mshr = 12
+
 system = System()
 system.clk_domain = SrcClockDomain(clock = '1GHz', voltage_domain = VoltageDomain())
 system.mem_mode = 'timing'
@@ -37,6 +59,7 @@ binary = sys.argv[1]
 process = Process()
 process.executable = binary
 process.cmd = [binary]
+system.workload = SEWorkload.init_compatible(binary)
 for cpu in system.cpu:
     cpu.workload = process
     cpu.createThreads()
