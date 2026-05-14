@@ -48,7 +48,7 @@ int main() {
      */
     m5_work_begin(0, 0); 
     
-    for (int i = 0; i < 1000; ++i) { // 重複多次以放大觀察效果
+    for (int i = 0; i < 10; ++i) { // 降至 10 次，足以觀察管線流動
         softmax_routing(num_experts, scores);
     }
 
