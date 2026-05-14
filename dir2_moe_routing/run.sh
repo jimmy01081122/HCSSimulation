@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "正在編譯 MoE Routing 測試程式..."
-g++ -static -I/work/gem5-project/gem5/include \
+g++ -static -mbranch-protection=none -I/work/gem5-project/gem5/include \
     src/moe_routing.cpp \
     /work/gem5-project/gem5/util/m5/build/arm64/out/libm5.a \
     -o src/moe_routing

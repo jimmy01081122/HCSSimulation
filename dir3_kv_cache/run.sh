@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "正在編譯 KV Cache 預取測試程式..."
-g++ -static -I/work/gem5-project/gem5/include \
+g++ -static -mbranch-protection=none -I/work/gem5-project/gem5/include \
     src/kv_prefetch.cpp \
     /work/gem5-project/gem5/util/m5/build/arm64/out/libm5.a \
     -lpthread \

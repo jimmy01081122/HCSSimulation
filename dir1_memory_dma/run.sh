@@ -3,7 +3,7 @@
 # 這個腳本會編譯並執行方向一的模擬。
 
 echo "正在編譯測試程式 src/dma_test.c..."
-gcc -static src/dma_test.c -o src/dma_test
+gcc -static -mbranch-protection=none src/dma_test.c -o src/dma_test
 
 mkdir -p m5out
 
