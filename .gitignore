@@ -1,0 +1,20 @@
+# gem5 編譯產物與暫存檔
+gem5/
+m5out/
+*.o
+*.obj
+*.so
+*.a
+
+# Docker 與系統暫存檔
+.DS_Store
+.docker/
+*.log
+*.tmp
+
+# 模擬輸出數據
+stats.txt
+config.json
+config.ini
+dot.pdf
+dot.dot
