@@ -14,7 +14,19 @@ g++ -static -I/work/gem5/include \
 
 mkdir -p m5out
 
-echo "啟動 gem5 O3CPU 模擬..."
-/work/gem5/build/ARM/gem5.opt -d m5out/ configs/routing_test.py src/moe_routing
+echo "啟動 gem5 O3CPU 模擬 (包含管線追蹤)..."
+# --debug-flags=O3PipeView : 啟動管線追蹤標籤
+# --debug-file=trace.out   : 將追蹤結果存至 m5out/trace.out
+/work/gem5/build/ARM/gem5.opt -d m5out/ \
+    --debug-flags=O3PipeView \
+    --debug-file=trace.out \
+    configs/routing_test.py src/moe_routing
 
-echo "模擬完成！請查看 m5out/stats.txt 中的 work_item 相關數據。"
+echo "正在轉換管線追蹤檔為可讀格式 (pipeview.out)..."
+# 使用 gem5 內建工具將二進位或原始追蹤文字轉換為視覺化矩陣格式
+# -c 500 表示轉換前 500 個指令，避免輸出檔過大
+python3 /work/gem5/util/o3-pipeview.py -c 500 -o m5out/pipeview.out m5out/trace.out
+
+echo "模擬與追蹤轉換完成！"
+echo "拓樸圖: m5out/config.dot.pdf"
+echo "管線圖: m5out/pipeview.out"

@@ -47,7 +47,15 @@ git commit -m "Initial commit: Project structure and README"
 3. **執行模擬**：
    - 進入容器後，進入各方向目錄執行對應的 `run.sh`。
 
-## 數據量測說明
-所有模擬結果預設會輸出至各執行目錄下的 `m5out/` 資料夾中。
-- `stats.txt`: 包含所有效能統計數據 (IPC, Cycles, Memory Accesses 等)。
-- `config.json`: 完整的系統硬體配置描述。
+## 視覺化工具環境準備
+
+本專案已整合 Graphviz 與 O3 Pipeline Viewer，協助開發者直觀地了解系統架構與 CPU 執行效率。
+
+### 1. 系統拓樸圖 (Graphviz)
+當模擬啟動後，gem5 會自動偵測環境中的 `pydot` 並在 `m5out/` 目錄生成 `config.dot.pdf`（或 `.svg`）。
+- **查看方式**：由於 Docker 容器與本機目錄已掛載，您可以直接在 macOS 的 Finder 中進入 `m5out/` 資料夾，使用「預覽」程式開啟 PDF 檔案。
+
+### 2. O3 管線視覺化 (Pipeline Viewer)
+針對亂序執行核心 (O3CPU)，本專案可產生管線追蹤紀錄。
+- **生成方式**：執行帶有預設追蹤參數的 `run.sh`（如方向二）。
+- **查看方式**：生成的 `pipeview.out` 為純文字格式，建議使用具備等寬字型 (Monospace) 的編輯器（如 VS Code）開啟，以利對齊觀察指令在各階段 (Fetch, Decode, Execute...) 的流動。
