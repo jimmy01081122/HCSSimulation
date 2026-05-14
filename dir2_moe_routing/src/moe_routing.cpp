@@ -3,7 +3,7 @@
 #include <cmath>
 #include <algorithm>
 #include <gem5/m5ops.h> // 包含 gem5 的特殊指令，用於標記量測區段
-
+#define ITER 2 // 減少迭代次數，專注於觀察管線流動 
 /*
  * MoE (Mixture of Experts) 路由邏輯通常包含對 Expert 分數進行 Softmax 與 Top-K 選擇。
  * 這裡我們模擬這個邏輯，並使用 gem5 的 m5_work 指令來精確獲取統計數據。
@@ -48,7 +48,7 @@ int main() {
      */
     m5_work_begin(0, 0); 
     
-    for (int i = 0; i < 10; ++i) { // 降至 10 次，足以觀察管線流動
+    for (int i = 0; i < ITER; ++i) { // 降至 10 次，足以觀察管線流動
         softmax_routing(num_experts, scores);
     }
 
