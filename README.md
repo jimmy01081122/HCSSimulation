@@ -3,31 +3,17 @@
 本專案旨在透過 gem5 模擬器，實作並評估三種基礎的異構計算架構。這是一個針對新手設計的教學專案，重點在於架構的搭建、數據的採集與基礎效能分析。
 
 ## 專案目錄結構
-
-- `dir1_memory_dma/`: 記憶體頻寬與 DMA 數據搬運瓶頸分析。
-- `dir2_moe_routing/`: MoE (Mixture of Experts) 路由邏輯的運算延遲對比。
-- `dir3_kv_cache/`: KV Cache 分散收集與軟體預取模擬。
+- `dir`
+   - `dir1_memory_dma/`: 記憶體頻寬與 DMA 數據搬運瓶頸分析。
+   - `dir2_moe_routing/`: MoE (Mixture of Experts) 路由邏輯的運算延遲對比。
+   - `dir3_kv_cache/`: KV Cache 分散收集與軟體預取模擬。
 - `docs/`: 詳細的教學文件與實驗報告。
 
 ## 環境設定與啟動
-
-本專案建議在 macOS (Apple Silicon) 上透過 Docker 執行 gem5 環境。
-
-### 1. 啟動 Docker 容器
+### 啟動 Docker 容器
 請確保已安裝 Docker Desktop 並在 `gem5-project` 目錄下執行：
 ```bash
 docker run --rm -it -v "$(pwd)":/work gem5-env
-```
-
-### 2. Git 初始化與遠端同步
-若您是第一次在新的環境開發，請執行以下指令：
-```bash
-cd /work/HCSSimulation
-git init
-git remote add origin git@github.com:jimmy01081122/HCSSimulation.git
-git add .
-git commit -m "Initial commit: Project structure and README"
-# git push -u origin main (請確保已設定 SSH Key)
 ```
 
 ## 跨電腦環境轉移指南 (Workflow)
