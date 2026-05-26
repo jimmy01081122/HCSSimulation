@@ -22,10 +22,10 @@ Verify gem5 is installed and compiled:
 
 ```bash
 cd /home/a/HCSSimulation/gem5
-ls -la build/ALL/gem5.opt || ls -la build/X86/gem5.opt
+scons build/ARM/gem5.opt -j$(nproc)
+scons build/RISCV/gem5.opt -j$(nproc)
 
-# If not found, compile gem5:
-python3 `which scons` build/X86/gem5.opt -j$(nproc)
+
 ```
 
 ### 2. Run Your First Experiment
@@ -35,9 +35,14 @@ Execute the hello world example:
 ```bash
 cd /home/a/HCSSimulation/gem5
 
-./build/ALL/gem5.opt \
+./build/ARM/gem5.opt \
   --outdir=../experiments/gem5-learning/results/se_hello \
   ../experiments/gem5-learning/configs/se_hello.py
+
+./build/RISCV/gem5.opt \
+  --outdir=../experiments/gem5-learning/results/se_hello \
+  ../experiments/gem5-learning/configs/se_hello.py
+
 ```
 
 Check the results:
@@ -115,7 +120,7 @@ Follow this sequence to master gem5:
 ```bash
 cd /home/a/HCSSimulation/gem5
 
-./build/X86/gem5.opt \
+./build/RISCV/gem5.opt \
   --outdir=../experiments/gem5-learning/results/my_exp \
   ../experiments/gem5-learning/configs/se_hello.py
 ```

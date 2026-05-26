@@ -1,7 +1,6 @@
 
-# -*- coding: utf-8 -*-
 from pathlib import Path
-# 中文註解測試
+
 from gem5.components.boards.simple_board import SimpleBoard
 from gem5.components.cachehierarchies.classic.no_cache import NoCache
 from gem5.components.memory.single_channel import SingleChannelDDR3_1600

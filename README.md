@@ -215,7 +215,7 @@ python3 experiments/gem5-learning/scripts/parse_stats.py \
 - 不建議提交 `gem5/` 原始碼、`build/`、大型 binary 或大量模擬輸出。
 - 新機器可依 `WSL2_GUIDE.md` 與 `scripts/setup_wsl2.sh` 重新建立環境。
 - 若編譯 gem5 時記憶體不足，請增加 Docker/WSL2 可用記憶體或降低 `-j` 平行度。
-
+- 若遇到 gem5 與版本過舊(v23->v25 now) ，使用 `scripts/setup_dir.sh`
 ## 參考文件
 
 - `WSL2_GUIDE.md`：Windows/WSL2 環境建置流程。

@@ -20,12 +20,12 @@
 
 | 參數 | 值 |
 |---|---|
-| gem5 binary | ./build/ALL/gem5.opt 或 ./build/X86/gem5.opt |
+| gem5 binary | ./build/RISCV/gem5.opt|
 | Configuration file | configs/... |
 | Workload | （指定程式或 resource） |
 | CPU 型別 | ATOMIC / TIMING / O3 |
 | 核心數 | |
-| ISA | x86 / ARM 等 |
+| ISA | RISCV / ARM 等 |
 | L1I Cache | 大小、關聯度 |
 | L1D Cache | 大小、關聯度 |
 | L2 Cache | 大小、關聯度 |
