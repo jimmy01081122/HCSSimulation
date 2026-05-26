@@ -1,19 +1,13 @@
 # gem5 完整學習指南 - ARM 和 RISCV ISA 版本
 
-歡迎！本項目為您提供了三個完整的 gem5 學習框架，涵蓋不同的指令集架構（ISA）。
+歡迎！本項目為您提供了兩個完整的 gem5 學習框架，涵蓋不同的指令集架構（ISA）。
 
 ---
 
-## 📚 可用版本
+## 可用版本
 
-### 1. **原始版本（x86 ISA）**
-   - 檔案：`prompt_generated_gem5_tutorial.md`
-   - 框架：`experiments/gem5-learning/`
-   - 用途：通用 gem5 學習
-   - 編譯：`build/X86/gem5.opt` 或 `build/ALL/gem5.opt`
-
-### 2. **ARM ISA 版本**
-   - 檔案：`prompt_generated_gem5_tutorial_ARM.md` ⭐
+### 1. **ARM ISA 版本**
+   - 檔案：`prompt_generated_gem5_tutorial_ARM.md`
    - 框架：`experiments/gem5-learning-arm/`
    - 用途：ARM 架構特定實驗
    - 編譯：`build/ARM/gem5.opt`
@@ -22,8 +16,8 @@
      - 移動設備模擬
      - 功耗效率研究
 
-### 3. **RISCV ISA 版本**
-   - 檔案：`prompt_generated_gem5_tutorial_RISCV.md` ⭐
+### 2. **RISCV ISA 版本**
+   - 檔案：`prompt_generated_gem5_tutorial_RISCV.md`
    - 框架：`experiments/gem5-learning-riscv/`
    - 用途：RISCV 架構特定實驗
    - 編譯：`build/RISCV/gem5.opt`
@@ -34,7 +28,7 @@
 
 ---
 
-## 🚀 快速開始指南
+## 快速開始指南
 
 ### 選擇您的 ISA
 
@@ -42,7 +36,6 @@
 
 | 選擇 | 理由 |
 |---|---|
-| **x86 (原始)** | 通用學習，相容性最好 |
 | **ARM** | 研究移動/嵌入式系統 |
 | **RISCV** | 學習開放標準 ISA |
 
@@ -108,7 +101,7 @@ cd /home/a/HCSSimulation/gem5
 
 ---
 
-## 📖 教學文件位置
+## 教學文件位置
 
 ### ARM ISA 教學
 
@@ -143,15 +136,14 @@ cd /home/a/HCSSimulation/gem5
 
 ---
 
-## 🗂️ 目錄結構
+## 目錄結構
 
 ```
 /home/a/HCSSimulation/
 │
-├── 📄 prompt_generated_gem5_tutorial_ARM.md      (ARM 完整教學)
-├── 📄 prompt_generated_gem5_tutorial_RISCV.md    (RISCV 完整教學)
-├── 📄 prompt_generated_gem5_tutorial.md          (x86 原始教學)
-├── 📄 ISA_SELECTION_GUIDE.md                     (本檔案)
+├── prompt_generated_gem5_tutorial_ARM.md      (ARM 完整教學)
+├── prompt_generated_gem5_tutorial_RISCV.md    (RISCV 完整教學)
+├── ISA_SELECTION_GUIDE.md                     (本檔案)
 │
 ├── experiments/
 │   ├── gem5-learning-arm/
@@ -162,34 +154,31 @@ cd /home/a/HCSSimulation/gem5
 │   │   ├── notes/             (ARM 實驗記錄)
 │   │   └── README.md          (ARM 快速指南)
 │   │
-│   ├── gem5-learning-riscv/
-│   │   ├── configs/           (RISCV 配置檔案)
-│   │   ├── scripts/           (RISCV 統計工具)
-│   │   ├── results/           (RISCV 輸出結果)
-│   │   ├── workloads/         (RISCV 測試程式)
-│   │   ├── notes/             (RISCV 實驗記錄)
-│   │   └── README.md          (RISCV 快速指南)
-│   │
-│   └── gem5-learning/         (原始 x86 框架)
-│       └── ...
+│   └── gem5-learning-riscv/
+│       ├── configs/           (RISCV 配置檔案)
+│       ├── scripts/           (RISCV 統計工具)
+│       ├── results/           (RISCV 輸出結果)
+│       ├── workloads/         (RISCV 測試程式)
+│       ├── notes/             (RISCV 實驗記錄)
+│       └── README.md          (RISCV 快速指南)
 ```
 
 ---
 
-## 🔄 ISA 對比
+## ISA 對比
 
-| 特性 | ARM | RISCV | x86 |
-|---|---|---|---|
-| **開放性** | ❌ 閉源 | ✅ 完全開源 | ❌ 閉源 |
-| **簡潔性** | 中等 | ✅ 最簡潔 | ❌ 複雜 |
-| **業界應用** | ✅ 廣泛（手機） | 新興 | ✅ 廣泛（PC） |
-| **學習難度** | 中等 | ✅ 最簡單 | 高 |
-| **gem5 支援** | ✅ 完整 | ✅ 完整 | ✅ 完整 |
-| **適合研究** | 移動/嵌入式 | 開放標準 | 通用 |
+| 特性 | ARM | RISCV |
+|---|---|---|
+| **開放性** | 閉源 | 完全開源 |
+| **簡潔性** | 中等 | 最簡潔 |
+| **業界應用** | 廣泛（手機） | 新興 |
+| **學習難度** | 中等 | 最簡單 |
+| **gem5 支援** | 完整 | 完整 |
+| **適合研究** | 移動/嵌入式 | 開放標準 |
 
 ---
 
-## 💡 學習建議
+## 學習建議
 
 ### 初學者
 1. **開始**：閱讀 ARM 或 RISCV 教學（選您感興趣的）
@@ -209,7 +198,7 @@ cd /home/a/HCSSimulation/gem5
 
 ---
 
-## ⚡ 常見工作流程
+## 常見工作流程
 
 ### 工作流程 1：快速驗證
 
@@ -266,7 +255,7 @@ diff experiments/gem5-learning-arm/results/comparison/stats.txt \
 
 ---
 
-## 🔧 配置檔案速查
+## 配置檔案速查
 
 ### ARM 配置
 
@@ -288,7 +277,7 @@ diff experiments/gem5-learning-arm/results/comparison/stats.txt \
 
 ---
 
-## 📊 統計解析
+## 統計解析
 
 ### ARM 統計
 
@@ -310,7 +299,7 @@ python3 experiments/gem5-learning-riscv/scripts/parse_stats_riscv.py \
 
 ---
 
-## 🐛 故障排除
+## 故障排除
 
 ### ARM 問題
 
@@ -330,7 +319,7 @@ python3 experiments/gem5-learning-riscv/scripts/parse_stats_riscv.py \
 
 ---
 
-## 📚 學習路徑建議
+## 學習路徑建議
 
 ### 路徑 A：ARM 架構（推薦從事移動/嵌入式研究）
 
@@ -365,7 +354,7 @@ python3 experiments/gem5-learning-riscv/scripts/parse_stats_riscv.py \
 
 ---
 
-## ✅ 檢查清單
+## 檢查清單
 
 完成以下項目：
 
@@ -387,7 +376,7 @@ python3 experiments/gem5-learning-riscv/scripts/parse_stats_riscv.py \
 
 ---
 
-## 📞 支援資源
+## 支援資源
 
 - **gem5 官方**：https://www.gem5.org/
 - **ARM 架構**：https://developer.arm.com/
@@ -396,7 +385,7 @@ python3 experiments/gem5-learning-riscv/scripts/parse_stats_riscv.py \
 
 ---
 
-## 🎯 下一步
+## 下一步
 
 選擇您想學習的 ISA，然後：
 
@@ -405,7 +394,7 @@ python3 experiments/gem5-learning-riscv/scripts/parse_stats_riscv.py \
 3. **運行**：開始第一個實驗
 4. **探索**：深入學習該 ISA 的特性
 
-祝您學習愉快！🚀
+祝您學習愉快！
 
 ---
 

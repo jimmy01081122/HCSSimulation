@@ -1,50 +1,58 @@
 # gem5 Complete Learning Guide - Start Here
 
-Welcome! This document will guide you through the complete gem5 learning materials that have been generated based on the specifications in `prompt.md`.
+Welcome! This document will guide you through the complete gem5 learning materials. Choose your preferred ISA (ARM or RISC-V) and begin learning.
 
 ## What Has Been Created
 
 A comprehensive, CLI-friendly gem5 teaching framework including:
 
-1. **Main Tutorial**: `prompt_generated_gem5_tutorial.md` (3,000+ lines, 76 KB)
-   - Covers 13 major topics
-   - Complete with code examples
-   - Step-by-step instructions
-   - Troubleshooting guide
+1. **Main Tutorials**: 
+   - `prompt_generated_gem5_tutorial_ARM.md` - ARM architecture
+   - `prompt_generated_gem5_tutorial_RISCV.md` - RISC-V architecture
 
-2. **Experiment Framework**: `experiments/gem5-learning/`
-   - Configuration files (Python scripts)
-   - Utility scripts (statistics parsing)
-   - Documentation and templates
-   - Pre-built directory structure
+2. **Experiment Framework**: 
+   - `experiments/gem5-learning-arm/` - ARM experiments
+   - `experiments/gem5-learning-riscv/` - RISC-V experiments
 
 ## Quick Access Guide
 
+### Choose Your ISA First
+
+**Option A: ARM Architecture**
+- Tutorial: `prompt_generated_gem5_tutorial_ARM.md`
+- Framework: `experiments/gem5-learning-arm/`
+- Best for: Mobile/embedded systems research
+
+**Option B: RISC-V Architecture**
+- Tutorial: `prompt_generated_gem5_tutorial_RISCV.md`
+- Framework: `experiments/gem5-learning-riscv/`
+- Best for: Open-source ISA learning
+
 ### For Absolute Beginners
 
-Start with these steps:
+Start with these steps (using ARM as example):
 
-1. **Read the Introduction** in `prompt_generated_gem5_tutorial.md`:
+1. **Read the Introduction** in `prompt_generated_gem5_tutorial_ARM.md`:
    - Part 1: gem5 Execution Modes Overview
    - Part 2: Standard Library Components
 
 2. **Run Your First Experiment**:
    ```bash
    cd /home/a/HCSSimulation/gem5
-   ./build/ALL/gem5.opt \
-     --outdir=../experiments/gem5-learning/results/se_hello \
-     ../experiments/gem5-learning/configs/se_hello.py
+   ./build/ARM/gem5.opt \
+     --outdir=../experiments/gem5-learning-arm/results/se_hello \
+     ../experiments/gem5-learning-arm/configs/se_hello_arm.py
    ```
 
 3. **Verify Success**:
    ```bash
-   ls ../experiments/gem5-learning/results/se_hello/
-   cat ../experiments/gem5-learning/results/se_hello/stats.txt | head -30
+   ls ../experiments/gem5-learning-arm/results/se_hello/
+   cat ../experiments/gem5-learning-arm/results/se_hello/stats.txt | head -30
    ```
 
 ### For Users with gem5 Experience
 
-Jump directly to sections of interest in `prompt_generated_gem5_tutorial.md`:
+Jump directly to sections of interest in your chosen tutorial:
 
 - **Part 5**: CPU Model Teaching (ATOMIC, TIMING, O3)
 - **Part 7**: Ruby Coherence (MESI Two Level)
@@ -52,16 +60,13 @@ Jump directly to sections of interest in `prompt_generated_gem5_tutorial.md`:
 
 ### For Those Ready for Automation
 
-Use the provided scripts:
+Use the provided scripts (ARM example):
 
 ```bash
 # Parse statistics from experiments
-python3 experiments/gem5-learning/scripts/parse_stats.py \
-  experiments/gem5-learning/results/se_hello \
-  --out experiments/gem5-learning/results/summary.csv
-
-# Run full DSE (warning: takes several hours)
-python3 experiments/gem5-learning/scripts/run_dse.py
+python3 experiments/gem5-learning-arm/scripts/parse_stats_arm.py \
+  experiments/gem5-learning-arm/results/se_hello \
+  --out experiments/gem5-learning-arm/results/summary.csv
 ```
 
 ## Tutorial Structure
@@ -103,37 +108,39 @@ python3 experiments/gem5-learning/scripts/run_dse.py
 - Skill progression
 - Advanced topics
 
-## File Locations
+## File Locations (ARM Example)
 
 ```
 /home/a/HCSSimulation/
-├── prompt_generated_gem5_tutorial.md          # Main tutorial (READ THIS!)
+├── prompt_generated_gem5_tutorial_ARM.md      # ARM tutorial (READ THIS!)
+├── prompt_generated_gem5_tutorial_RISCV.md    # RISC-V tutorial
+├── ISA_SELECTION_GUIDE.md                     # Choose your ISA
 ├── TUTORIAL_START_HERE.md                     # This file
-├── experiments/gem5-learning/
+├── experiments/gem5-learning-arm/
 │   ├── README.md                              # Quick start guide
 │   ├── configs/
-│   │   ├── se_hello.py                        # Hello world example
-│   │   ├── se_classic_cache.py                # Cache hierarchy example
-│   │   ├── se_cpu_select.py                   # CPU model selection
-│   │   ├── se_memory_select.py                # Memory configuration
-│   │   ├── se_ruby_mesi.py                    # Multi-core coherence
-│   │   ├── fs_x86_template.py                 # FS mode template
-│   │   └── se_dse_config.py                   # DSE configuration
+│   │   ├── se_hello_arm.py                    # Hello world example
+│   │   ├── se_classic_cache_arm.py            # Cache hierarchy example
+│   │   ├── se_cpu_select_arm.py               # CPU model selection
+│   │   └── se_dse_config_arm.py               # DSE configuration
 │   ├── scripts/
-│   │   ├── parse_stats.py                     # Statistics parser
-│   │   └── run_dse.py                         # DSE runner
+│   │   └── parse_stats_arm.py                 # Statistics parser
 │   ├── results/                               # Output directory
 │   ├── workloads/                             # Custom programs
 │   └── notes/
 │       └── experiment_log.md                  # Experiment template
+└── experiments/gem5-learning-riscv/
+    └── (Similar structure for RISC-V)
 ```
 
 ## Learning Path (Recommended)
 
 ### Beginner (1-2 hours)
-1. Run `se_hello.py` - verify gem5 works
-2. Run `se_classic_cache.py` - observe cache effects
-3. Compare ATOMIC vs TIMING - understand CPU models
+1. Read `ISA_SELECTION_GUIDE.md` to choose your ISA
+2. Read Part 1-2 of your chosen tutorial
+3. Run `se_hello_*.py` - verify gem5 works
+4. Run `se_classic_cache_*.py` - observe cache effects
+5. Compare ATOMIC vs TIMING - understand CPU models
 
 ### Intermediate (3-4 hours)
 1. CPU model comparison (ATOMIC, TIMING, O3)
@@ -143,9 +150,9 @@ python3 experiments/gem5-learning/scripts/run_dse.py
 
 ### Advanced (4+ hours)
 1. Design space exploration
-2. FS mode experimentation
-3. Custom workload development
-4. Component customization
+2. Custom workload development
+3. Component customization
+4. Cross-ISA comparison
 
 ## Pre-requisites
 

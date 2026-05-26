@@ -1,6 +1,6 @@
 # HCSSimulation
 
-HCSSimulation 是一個以 gem5 為核心的異構系統架構模擬與教學專案。專案內容分成兩條主線：一條是 x86、ARM、RISC-V 的 gem5 入門實驗框架，另一條是針對資料搬運、MoE routing 與 KV cache prefetch 的架構研究雛形。
+HCSSimulation 是一個以 gem5 為核心的異構系統架構模擬與教學專案。專案內容分成兩條主線：一條是 ARM、RISC-V 的 gem5 入門實驗框架，另一條是針對資料搬運、MoE routing 與 KV cache prefetch 的架構研究雛形。
 
 此倉庫主要保存 gem5 設定檔、workload 原始碼、執行腳本與教學文件；gem5 原始碼與編譯產物通常不建議提交到 Git。
 
@@ -8,17 +8,15 @@ HCSSimulation 是一個以 gem5 為核心的異構系統架構模擬與教學專
 
 ### gem5 入門實驗
 
-`experiments/` 內提供三種 ISA 的最小 SE mode 範例與統計解析工具：
+`experiments/` 內提供二種 ISA 的最小 SE mode 範例與統計解析工具：
 
 | 目錄 | ISA | 主要設定檔 | 統計工具 |
 |---|---|---|---|
-| `experiments/gem5-learning/` | x86 | `configs/se_hello.py` | `scripts/parse_stats.py` |
 | `experiments/gem5-learning-arm/` | ARM | `configs/se_hello_arm.py` | `scripts/parse_stats_arm.py` |
 | `experiments/gem5-learning-riscv/` | RISC-V | `configs/se_hello_riscv.py` | `scripts/parse_stats_riscv.py` |
 
 相關完整教學文件：
 
-- `prompt_generated_gem5_tutorial.md`
 - `prompt_generated_gem5_tutorial_ARM.md`
 - `prompt_generated_gem5_tutorial_RISCV.md`
 - `TUTORIAL_START_HERE.md`
@@ -109,7 +107,6 @@ cd gem5
 依照要執行的 ISA 編譯：
 
 ```bash
-scons build/X86/gem5.opt -j$(nproc)
 scons build/ARM/gem5.opt -j$(nproc)
 scons build/RISCV/gem5.opt -j$(nproc)
 ```
@@ -121,15 +118,6 @@ scons build/ARM/gem5.opt -j$(nproc)
 ```
 
 ## 執行入門實驗
-
-### x86
-
-```bash
-cd /work/gem5
-./build/X86/gem5.opt \
-  --outdir=../experiments/gem5-learning/results/se_hello \
-  ../experiments/gem5-learning/configs/se_hello.py
-```
 
 ### ARM
 
@@ -153,7 +141,9 @@ cd /work/gem5
 
 ```bash
 chmod +x dir/TRY/dir1_memory_dma/run.sh
-chmod +x dir/TRY/dir2_moe_routing/run.sh
+chmod +x dir/TRY/dir2_m\
+  --outdir=../experiments/gem5-learning-riscv/results/se_hello \
+  ../experiments/gem5-learning-riscv/configs/se_hello_riscv
 chmod +x dir/TRY/dir3_kv_cache/run.sh
 ```
 
@@ -189,12 +179,20 @@ gem5 的輸出通常會放在 `m5out/` 或 `--outdir` 指定的結果目錄。�
 - `config.json`：模擬系統的結構化設定。
 - `config.dot` / `config.dot.pdf` / `config.dot.svg`：由 Graphviz 產生的系統拓樸圖。
 
-解析入門實驗統計：
+解析入門實驗統計（ARM 版本）：
 
 ```bash
-python3 experiments/gem5-learning/scripts/parse_stats.py \
-  experiments/gem5-learning/results/se_hello \
-  --out experiments/gem5-learning/results/summary.csv
+python3 experiments/gem5-learning-arm/scripts/parse_stats_arm.py \
+  experiments/gem5-learning-arm/results/se_hello \
+  --out experiments/gem5-learning-arm/results/summary.csv
+```
+
+解析入門實驗統計（RISC-V 版本）：
+
+```bash
+python3 experiments/gem5-learning-riscv/scripts/parse_stats_riscv.py \
+  experiments/gem5-learning-riscv/results/se_hello \
+  --out experiments/gem5-learning-riscv/results/summary.csv
 ```
 
 視覺化工具與 O3 pipeline viewer 的使用方式請參考 `docs/visualization_tools_tutorial.md`。
@@ -202,7 +200,7 @@ python3 experiments/gem5-learning/scripts/parse_stats.py \
 ## 建議學習順序
 
 1. 先閱讀 `TUTORIAL_START_HERE.md`，了解 gem5 SE mode、CPU model 與統計輸出。
-2. 依需求選擇 x86、ARM 或 RISC-V，執行 `experiments/` 內的 hello 範例。
+2. 依需求選擇 ARM 或 RISC-V，執行 `experiments/` 內的 hello 範例。
 3. 閱讀 `ISA_SELECTION_GUIDE.md`，決定後續要使用的 ISA。
 4. 進入 `dir/TRY/` 的三個方向實驗，搭配 `docs/` 內文件觀察瓶頸與可優化方向。
 5. 使用 `stats.txt`、Graphviz 拓樸圖與 pipeline trace 進行分析。

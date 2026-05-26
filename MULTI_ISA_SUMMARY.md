@@ -1,8 +1,8 @@
-# Multi-ISA gem5 Learning Framework - 完成報告
+# Multi-ISA gem5 Learning Framework - Complete Report
 
-## 任務完成狀況
+## Task Completion Status
 
-✅ **ISA 版本已全數轉換為 ARM 與 RISCV**
+Completed: ISA versions converted to ARM and RISCV
 
 根據您的要求，已完成以下工作：
 1. **生成三個獨立的教學文件版本**（x86 原版保留供參考）
@@ -160,14 +160,14 @@ python3 `which scons` build/ALL/gem5.opt -j $(nproc)
 
 ## 📊 主要特點
 
-| 特性 | x86 | ARM | RISCV |
-|------|-----|-----|-------|
-| 教學文件 | ✅ | ✅ | ✅ |
-| 實驗框架 | ✅ | ✅ | ✅ |
-| SE 模式 | ✅ | ✅ | ✅ |
-| CPU 型號 | ✅ | ✅ | ✅ |
-| 統計工具 | ✅ | ✅ | ✅ |
-| 開源 | ❌ | ❌ | ✅ |
+| Feature | ARM | RISCV |
+|---------|-----|-------|
+| Teaching Document | Yes | Yes |
+| Experiment Framework | Yes | Yes |
+| SE Mode | Yes | Yes |
+| CPU Models | Yes | Yes |
+| Statistics Tools | Yes | Yes |
+| Open Source | No | Yes |
 
 ---
 
@@ -235,6 +235,6 @@ python3 `which scons` build/ALL/gem5.opt -j $(nproc)
 
 ---
 
-**最後更新**: 2024 年
-**作者**: GitHub Copilot
-**狀態**: ✅ 所有需求已完成
+**Last Updated**: 2024
+**Author**: GitHub Copilot  
+**Status**: All requirements completed
