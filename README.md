@@ -144,9 +144,7 @@ cd /work/gem5
 
 ```bash
 cd /work/gem5
-./build/RISCV/gem5.opt \
-  --outdir=../experiments/gem5-learning-riscv/results/se_hello \
-  ../experiments/gem5-learning-riscv/configs/se_hello_riscv.py
+./build/RISCV/gem5.opt   --outdir=../experiments/gem5-learning/results/se_hello_riscv   ../experiments/gem5-learning/configs/se_hello.py
 ```
 
 ## 執行研究方向實驗

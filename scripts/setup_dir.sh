@@ -3,7 +3,7 @@
 
 set -euo pipefail
 
-GEM5_ROOT="$HOME/HCSSimulation"
+GEM5_ROOT="/work"
 GEM5_DIR="$GEM5_ROOT/gem5"
 GEM5_TAG="v25.1.0.1"
 JOBS="${JOBS:-$(nproc)}"
@@ -20,9 +20,11 @@ lsb_release -a || true
 
 echo
 echo "[2/8] Installing dependencies"
-sudo apt update
+#sudo 
+apt update
 
-sudo apt install -y \
+#sudo 
+  apt install -y \
   build-essential git m4 scons zlib1g zlib1g-dev \
   libprotobuf-dev protobuf-compiler libprotoc-dev libgoogle-perftools-dev \
   python3-dev libboost-all-dev pkg-config python3-tk clang-format-15 \
@@ -72,11 +74,11 @@ PYEOF
 echo
 echo "[8/8] Building RISCV and ARM gem5.opt"
 echo "Building RISCV..."
-scons build/RISCV/gem5.opt -j"$JOBS"
+scons build/RISCV/gem5.opt -j$(nproc)
 
 echo
 echo "Building ARM..."
-scons build/ARM/gem5.opt -j"$JOBS"
+scons build/ARM/gem5.opt -j$(nproc)
 
 echo
 echo "============================================================"
@@ -93,14 +95,14 @@ mkdir -p "$GEM5_ROOT/experiments/gem5-v25-test"
 echo
 echo "Testing RISCV hello with built-in test binary"
 ./build/RISCV/gem5.opt \
-  --outdir="$GEM5_ROOT/experiments/gem5-v25-test/se_hello_riscv_legacy" \
+  --outdir="$GEM5_ROOT/experiments/gem5/se_hello.py" \
   configs/deprecated/example/se.py \
   -c tests/test-progs/hello/bin/riscv/linux/hello
 
 echo
 echo "RISCV test stats:"
 grep -E "simInsts|simTicks|hostSeconds|hostInstRate" \
-  "$GEM5_ROOT/experiments/gem5-v25-test/se_hello_riscv_legacy/stats.txt" || true
+  "$GEM5_ROOT/experiments/gem5/se_hello.py/stats.txt" || true
 
 echo
 echo "============================================================"
