@@ -1,86 +1,61 @@
-# HCSSimulation
+# HCSSimulation - gem5 Learning Project
 
-HCSSimulation 是一個以 gem5 為核心的異構系統架構模擬與教學專案。專案內容分成兩條主線：一條是 ARM、RISC-V 的 gem5 入門實驗框架，另一條是針對資料搬運、MoE routing 與 KV cache prefetch 的架構研究雛形。
+HCSSimulation 是一個以 gem5 為核心的計算機架構模擬教學專案。本專案專注於 ARM 與 RISC-V 兩種指令集架構，涵蓋從基礎 SE mode 模擬到進階 Design Space Exploration 的完整學習路徑。
 
-此倉庫主要保存 gem5 設定檔、workload 原始碼、執行腳本與教學文件；gem5 原始碼與編譯產物通常不建議提交到 Git。
+## 學習主題
 
-## 專案內容
+本專案共分為 10 個主題，按照循序漸進的方式安排，每個主題同時提供 ARM 與 RISC-V 兩種版本：
 
-### gem5 入門實驗
-
-`experiments/` 內提供二種 ISA 的最小 SE mode 範例與統計解析工具：
-
-| 目錄 | ISA | 主要設定檔 | 統計工具 |
-|---|---|---|---|
-| `experiments/gem5-learning-arm/` | ARM | `configs/se_hello_arm.py` | `scripts/parse_stats_arm.py` |
-| `experiments/gem5-learning-riscv/` | RISC-V | `configs/se_hello_riscv.py` | `scripts/parse_stats_riscv.py` |
-
-相關完整教學文件：
-
-- `prompt_generated_gem5_tutorial_ARM.md`
-- `prompt_generated_gem5_tutorial_RISCV.md`
-- `TUTORIAL_START_HERE.md`
-- `ISA_SELECTION_GUIDE.md`
-
-### 三個研究方向
-
-`dir/TRY/` 內包含三個較接近架構研究題目的實驗：
-
-| 方向 | 目錄 | 主題 | 重點 |
-|---|---|---|---|
-| 方向一 | `dir/TRY/dir1_memory_dma/` | 記憶體頻寬與 DMA 資料搬運 | 觀察大量資料複製造成的 bus 與 DRAM 壓力 |
-| 方向二 | `dir/TRY/dir2_moe_routing/` | MoE routing 延遲分析 | 以 O3 CPU 觀察 softmax/top-k routing 的 ROI 效能 |
-| 方向三 | `dir/TRY/dir3_kv_cache/` | KV cache 分散收集與軟體預取 | 以雙核心與共享 L2 評估 prefetch 對 cache miss 的影響 |
-
-各方向的說明文件位於：
-
-- `docs/direction1_dma_tutorial.md`
-- `docs/direction2_moe_routing_tutorial.md`
-- `docs/direction3_kv_cache_tutorial.md`
+| 編號 | 主題 | 說明 |
+|------|------|------|
+| 01 | SE Mode | Syscall Emulation 模式基礎 |
+| 02 | FS Mode | Full System 模式概念與實作 |
+| 03 | Standard Library | gem5 標準函式庫元件介紹 |
+| 04 | Python Configuration | Python 組態系統深入解析 |
+| 05 | CPU Model | CPU 模型比較 (Atomic/Timing/Minor/O3) |
+| 06 | Cache Hierarchy | 快取階層設計與配置 |
+| 07 | Memory System | 記憶體子系統探索 |
+| 08 | Ruby Coherence | Ruby 快取一致性協定 |
+| 09 | Statistics Parsing | 統計資料解析與分析 |
+| 10 | Design Space Exploration | 自動化設計空間探索 |
 
 ## 目錄結構
 
 ```text
 HCSSimulation/
-├── Dockerfile
-├── README.md
-├── WSL2_GUIDE.md
-├── ISA_SELECTION_GUIDE.md
-├── TUTORIAL_START_HERE.md
-├── prompt_generated_gem5_tutorial*.md
-├── docs/
-│   ├── direction1_dma_tutorial.md
-│   ├── direction2_moe_routing_tutorial.md
-│   ├── direction3_kv_cache_tutorial.md
-│   └── visualization_tools_tutorial.md
-├── experiments/
-│   ├── gem5-learning/
-│   ├── gem5-learning-arm/
-│   └── gem5-learning-riscv/
-├── dir/TRY/
-│   ├── dir1_memory_dma/
-│   ├── dir2_moe_routing/
-│   └── dir3_kv_cache/
-└── scripts/
-    └── setup_wsl2.sh
+├── Dockerfile                 Docker 環境定義
+├── README.md                  本文件
+├── INDEX.md                   閱讀順序索引
+├── prompt.md                  原始需求文件
+├── topics/                    主題學習區 (核心內容)
+│   ├── 01_se_mode/
+│   │   ├── README.md          教學文件
+│   │   ├── arm/
+│   │   │   ├── config.py      ARM 組態腳本
+│   │   │   └── run.sh         ARM 執行腳本
+│   │   └── riscv/
+│   │       ├── config.py      RISC-V 組態腳本
+│   │       └── run.sh         RISC-V 執行腳本
+│   ├── 02_fs_mode/
+│   │   └── ...
+│   └── ... (共 10 個主題)
+├── docs/                      參考文件
+│   ├── references/            原始教學文件備份
+│   └── ...                    研究方向等其他文件
+├── scripts/                   輔助腳本
+└── gem5/                      gem5 原始碼 (需另行 clone)
 ```
 
 ## 環境需求
 
-建議使用 WSL2 或 Linux 環境搭配 Docker。Dockerfile 已包含 gem5 常用建置套件、Graphviz/pydot，以及 ARM cross compiler。
-
-基本需求：
-
 - Docker Desktop 或 Docker Engine
 - Git
-- 充足記憶體，建議 12 GB 以上
-- gem5 原始碼與對應 ISA 的編譯結果
+- 記憶體建議 12 GB 以上
+- 磁碟空間建議 20 GB 以上 (gem5 編譯產物)
 
 ## 快速開始
 
 ### 1. 建立 Docker 映像檔
-
-在專案根目錄執行：
 
 ```bash
 docker build -t gem5-env .
@@ -92,11 +67,9 @@ docker build -t gem5-env .
 docker run --rm -it -v "$(pwd)":/work gem5-env
 ```
 
-以下命令假設你已在容器內，且專案掛載於 `/work`。
+以下操作均假設已在容器內，專案掛載於 `/work`。
 
 ### 3. 取得並編譯 gem5
-
-若新環境尚未準備 gem5：
 
 ```bash
 cd /work
@@ -104,118 +77,53 @@ git clone https://github.com/gem5/gem5
 cd gem5
 ```
 
-依照要執行的 ISA 編譯：
+依照需要的 ISA 編譯：
 
 ```bash
+# 編譯 ARM 版本
 scons build/ARM/gem5.opt -j$(nproc)
+
+# 編譯 RISC-V 版本
 scons build/RISCV/gem5.opt -j$(nproc)
 ```
 
-若只需要跑 `dir/TRY/` 內目前的方向實驗，優先編譯 ARM：
+### 4. 開始學習
+
+進入 `topics/` 目錄，從 `01_se_mode` 開始按順序學習：
 
 ```bash
-scons build/ARM/gem5.opt -j$(nproc)
+cd /work/topics/01_se_mode
+cat README.md                 # 閱讀教學文件
+cd riscv                      # 或 cd arm
+./run.sh                      # 執行模擬
 ```
 
-## 執行入門實驗
+## 模擬輸出
 
-### ARM
+gem5 的模擬輸出位於各主題的 `m5out/` 目錄，常見檔案包含：
 
-```bash
-cd /work/gem5
-./build/ARM/gem5.opt \
-  --outdir=../experiments/gem5-learning-arm/results/se_hello \
-  ../experiments/gem5-learning-arm/configs/se_hello_arm.py
-```
-
-### RISC-V
-
-```bash
-cd /work/gem5
-./build/RISCV/gem5.opt   --outdir=../experiments/gem5-learning/results/se_hello_riscv   ../experiments/gem5-learning/configs/se_hello.py
-```
-
-## 執行研究方向實驗
-
-三個方向目錄都提供 `run.sh`。建議先確認腳本具有執行權限：
-
-```bash
-chmod +x dir/TRY/dir1_memory_dma/run.sh
-chmod +x dir/TRY/dir2_m\
-  --outdir=../experiments/gem5-learning-riscv/results/se_hello \
-  ../experiments/gem5-learning-riscv/configs/se_hello_riscv
-chmod +x dir/TRY/dir3_kv_cache/run.sh
-```
-
-執行方向一：
-
-```bash
-cd /work/dir/TRY/dir1_memory_dma
-./run.sh
-```
-
-執行方向二：
-
-```bash
-cd /work/dir/TRY/dir2_moe_routing
-./run.sh
-```
-
-執行方向三：
-
-```bash
-cd /work/dir/TRY/dir3_kv_cache
-./run.sh
-```
-
-注意：目前各方向腳本可能假設 gem5 位於 `/work/gem5` 或 `/work/gem5-project/gem5`。若你的環境路徑不同，請先打開對應的 `run.sh`，把 gem5 executable、include 目錄與 `libm5.a` 路徑改成實際位置。多數方向實驗使用 ARM gem5，請先確認 `build/ARM/gem5.opt` 已完成編譯。
-
-## 模擬輸出與分析
-
-gem5 的輸出通常會放在 `m5out/` 或 `--outdir` 指定的結果目錄。常見檔案包含：
-
-- `stats.txt`：效能統計，例如 sim ticks、IPC、cache miss、bus transaction。
-- `config.ini`：模擬系統的文字化設定。
-- `config.json`：模擬系統的結構化設定。
-- `config.dot` / `config.dot.pdf` / `config.dot.svg`：由 Graphviz 產生的系統拓樸圖。
-
-解析入門實驗統計（ARM 版本）：
-
-```bash
-python3 experiments/gem5-learning-arm/scripts/parse_stats_arm.py \
-  experiments/gem5-learning-arm/results/se_hello \
-  --out experiments/gem5-learning-arm/results/summary.csv
-```
-
-解析入門實驗統計（RISC-V 版本）：
-
-```bash
-python3 experiments/gem5-learning-riscv/scripts/parse_stats_riscv.py \
-  experiments/gem5-learning-riscv/results/se_hello \
-  --out experiments/gem5-learning-riscv/results/summary.csv
-```
-
-視覺化工具與 O3 pipeline viewer 的使用方式請參考 `docs/visualization_tools_tutorial.md`。
+| 檔案 | 說明 |
+|------|------|
+| `stats.txt` | 效能統計 (simTicks, IPC, cache miss rate 等) |
+| `config.ini` | 模擬系統的文字化設定 |
+| `config.json` | 模擬系統的結構化設定 (JSON) |
 
 ## 建議學習順序
 
-1. 先閱讀 `TUTORIAL_START_HERE.md`，了解 gem5 SE mode、CPU model 與統計輸出。
-2. 依需求選擇 ARM 或 RISC-V，執行 `experiments/` 內的 hello 範例。
-3. 閱讀 `ISA_SELECTION_GUIDE.md`，決定後續要使用的 ISA。
-4. 進入 `dir/TRY/` 的三個方向實驗，搭配 `docs/` 內文件觀察瓶頸與可優化方向。
-5. 使用 `stats.txt`、Graphviz 拓樸圖與 pipeline trace 進行分析。
+詳細的閱讀順序請參考 [INDEX.md](INDEX.md)。建議按照主題編號 01 至 10 循序學習，每個主題內先閱讀 `README.md`，再依據選擇的 ISA 進入 `arm/` 或 `riscv/` 目錄執行實驗。
 
-## 跨環境開發注意事項
-
-- 只提交此專案內的設定檔、原始碼、腳本與文件。
-- 不建議提交 `gem5/` 原始碼、`build/`、大型 binary 或大量模擬輸出。
-- 新機器可依 `WSL2_GUIDE.md` 與 `scripts/setup_wsl2.sh` 重新建立環境。
-- 若編譯 gem5 時記憶體不足，請增加 Docker/WSL2 可用記憶體或降低 `-j` 平行度。
-- 若遇到 gem5 與版本過舊(v23->v25 now) ，使用 `scripts/setup_dir.sh`
 ## 參考文件
 
-- `WSL2_GUIDE.md`：Windows/WSL2 環境建置流程。
-- `docs/HANDOVER.md`：交接與專案狀態補充。
-- `docs/visualization_tools_tutorial.md`：Graphviz 與 O3 pipeline viewer 教學。
-- `MULTI_ISA_SUMMARY.md`：多 ISA 版本摘要。
-- `FINAL_CHECKLIST.txt`：檢查清單。
+所有參考文件已歸檔至 `docs/` 目錄：
+
+- `docs/HANDOVER.md` - 專案交接與狀態補充
+- `docs/WSL2_GUIDE.md` - Windows/WSL2 環境建置
+- `docs/ISA_SELECTION_GUIDE.md` - ARM 與 RISC-V 選擇指南
+- `docs/references/` - 原始教學文件備份
+
+## 注意事項
+
+- 此專案使用 Docker 做容器化環境管理
+- 啟動指令：`docker run --rm -it -v $(pwd):/work gem5-env`
+- 不建議將 `gem5/` 原始碼與編譯產物提交到 Git
+- 若編譯時記憶體不足，降低 `-j` 平行度

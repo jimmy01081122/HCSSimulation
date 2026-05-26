@@ -1,6 +1,8 @@
 # gem5 編譯產物與暫存檔
 gem5/
-m5out/
+m5out*/
+m5out_*/
+*.csv
 *.o
 *.obj
 *.so
