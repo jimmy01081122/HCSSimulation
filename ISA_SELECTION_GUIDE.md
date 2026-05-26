@@ -400,4 +400,4 @@ python3 experiments/gem5-learning-riscv/scripts/parse_stats_riscv.py \
 
 **最後更新**：2024-05-25  
 **版本**：1.0 (多 ISA 版本)  
-**狀態**：✅ 完成
+**狀態**： 完成

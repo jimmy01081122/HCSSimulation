@@ -132,7 +132,7 @@ verify_gem5_prerequisites() {
         log_warn "gem5 source directory not found: $GEM5_DIR"
         log_warn "You can clone it with:"
         log_warn "  cd $PROJECT_ROOT"
-        log_warn "  git clone https://gem5.googlesource.com/public/gem5"
+        log_warn "  git clone https://github.com/gem5/gem5"
         return 1
     fi
     

@@ -31,7 +31,7 @@
 4. **在容器內準備 gem5 (若為新環境)**:
    ```bash
    # 下載原始碼
-   git clone https://gem5.googlesource.com/public/gem5
+   git clone https://github.com/gem5/gem5
    
    # 編譯 (ARM 版本)
    cd gem5

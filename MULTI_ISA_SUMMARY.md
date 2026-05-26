@@ -5,13 +5,12 @@
 Completed: ISA versions converted to ARM and RISCV
 
 根據您的要求，已完成以下工作：
-1. **生成三個獨立的教學文件版本**（x86 原版保留供參考）
 2. **為 ARM 和 RISCV 分別建立實驗框架**
 3. **創建多 ISA 導航指南**幫助學習者選擇合適版本
 
 ---
 
-## 📚 教學文件
+##  教學文件
 
 ### 1. ARM ISA 版本
 **文件**: `prompt_generated_gem5_tutorial_ARM.md` (13 KB)
@@ -62,7 +61,7 @@ processor = SimpleProcessor(cpu_type=CPUTypes.ATOMIC, isa=ISA.RISCV, num_cores=1
 
 ---
 
-## 🔧 實驗框架
+##  實驗框架
 
 ### ARM 框架結構
 ```
@@ -92,7 +91,7 @@ experiments/gem5-learning-riscv/
 
 ---
 
-## 🚀 快速開始
+##  快速開始
 
 ### 1. 選擇 ISA 版本
 參考 `ISA_SELECTION_GUIDE.md` 決定使用哪個 ISA：
@@ -125,7 +124,7 @@ python3 scripts/parse_stats_riscv.py results/ --out summary.csv
 
 ---
 
-## 📋 配置文件範例
+##  配置文件範例
 
 ### ARM 配置樣板 (se_hello_arm.py)
 - ATOMIC CPU，無快取
@@ -141,7 +140,7 @@ python3 scripts/parse_stats_riscv.py results/ --out summary.csv
 
 ---
 
-## 🔨 gem5 編譯指令
+##  gem5 編譯指令
 
 根據選擇的 ISA 編譯相應版本：
 
@@ -158,7 +157,7 @@ python3 `which scons` build/ALL/gem5.opt -j $(nproc)
 
 ---
 
-## 📊 主要特點
+##  主要特點
 
 | Feature | ARM | RISCV |
 |---------|-----|-------|
@@ -171,7 +170,7 @@ python3 `which scons` build/ALL/gem5.opt -j $(nproc)
 
 ---
 
-## 📁 所有新增文件
+##  所有新增文件
 
 ### 教學文件
 - `prompt_generated_gem5_tutorial_ARM.md`
@@ -196,7 +195,7 @@ python3 `which scons` build/ALL/gem5.opt -j $(nproc)
 
 ---
 
-## 🎯 後續建議
+##  後續建議
 
 1. **驗證資源可用性**
    - 確認 `arm-ubuntu-18.04-boot` 和 `riscv-ubuntu-20.04-boot` 二進位檔案在 gem5 資源庫中可用
@@ -218,7 +217,7 @@ python3 `which scons` build/ALL/gem5.opt -j $(nproc)
 
 ---
 
-## 💡 學習建議
+##  學習建議
 
 **初學者路線**:
 1. 選擇一個 ISA（推薦 RISCV，開源友好）

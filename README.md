@@ -100,7 +100,7 @@ docker run --rm -it -v "$(pwd)":/work gem5-env
 
 ```bash
 cd /work
-git clone https://gem5.googlesource.com/public/gem5
+git clone https://github.com/gem5/gem5
 cd gem5
 ```
 

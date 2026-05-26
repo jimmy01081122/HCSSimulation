@@ -34,20 +34,17 @@ ls -la | head -20
 ### 3. 確認 gem5 二進位是否存在
 
 ```bash
-ls -la build/ALL/gem5.opt || ls -la build/X86/gem5.opt || echo "gem5.opt not found"
 ```
 
 **目的**：gem5.opt 是優化版本的 gem5 模擬器，用於實際實驗。
 
 - 若找到 `build/ALL/gem5.opt`，請使用 `./build/ALL/gem5.opt`
-- 若找到 `build/X86/gem5.opt`，請使用 `./build/X86/gem5.opt`
 - 若兩者都不存在，需要編譯 gem5
 
 ### 4. 如果需要編譯 gem5
 
 ```bash
 cd /home/a/HCSSimulation/gem5
-python3 `which scons` build/X86/gem5.opt -j$(nproc)
 ```
 
 **說明**：
@@ -78,7 +75,6 @@ cat /proc/cpuinfo | grep processor | wc -l
 ls configs/example/gem5_library/ | head -20
 ```
 
-**預期看到**：包含 `se.py`、`x86-ubuntu.py` 等 standard library 範例。
 
 ### 8. 確認 Python 環境中 gem5 模組可用
 
@@ -141,7 +137,6 @@ gem5 standard library 是一套預先設計的 Python 模組，提供可重用�
 
 **可選 Board 類型**：
 - `SimpleBoard`：簡單系統，適合基礎實驗
-- `X86Board`：x86 架構系統，支援 FS mode
 
 #### 2. Processor
 
@@ -204,7 +199,6 @@ simulator.run()
 `obtain_resource` 函數用於下載預構建的測試程式或系統鏡像。
 
 **作用**：
-- 自動下載 gem5 資源（如 x86-hello64-static）
 - 支援本地快取，避免重複下載
 - 簡化 workload 取得流程
 
@@ -251,7 +245,6 @@ from gem5.sim.simulator import Simulator
 # 適合快速驗證功能，但不考慮微架構細節
 processor = SimpleProcessor(
     cpu_type=CPUTypes.ATOMIC,
-    isa=ISA.X86,
     num_cores=1
 )
 
@@ -279,9 +272,7 @@ board = SimpleBoard(
 )
 
 # Step 5: 設定 Workload
-# obtain_resource("x86-hello64-static") 下載預編譯的 hello world 程式
 # set_se_binary_workload 設定該程式為要模擬的任務
-binary_path = obtain_resource("x86-hello64-static")
 board.set_se_binary_workload(binary_path)
 
 # Step 6: 建立 Simulator 並執行
@@ -307,7 +298,6 @@ EOF
 1. **Processor**：
    - `cpu_type=CPUTypes.ATOMIC`：選擇 ATOMIC CPU，每條指令原子執行（1 cycle）
    - 原因：ATOMIC 無需建模微架構，快速驗證程式是否能正確執行
-   - `isa=ISA.X86`：指定 x86-64 架構，與 hello64 binary 匹配
    - `num_cores=1`：單核心
 
 2. **Memory**：
@@ -346,7 +336,6 @@ cd /home/a/HCSSimulation/gem5
 **若找不到 `build/ALL/gem5.opt`**，改用：
 
 ```bash
-./build/X86/gem5.opt \
   --outdir=../experiments/gem5-learning/results/se_hello \
   ../experiments/gem5-learning/configs/se_hello.py
 ```
@@ -374,7 +363,6 @@ grep "Hello" ../experiments/gem5-learning/results/se_hello/simdebug.log
 
 ### 常見錯誤排查
 
-**錯誤 1**：`Resource 'x86-hello64-static' not found`
 
 原因：gem5 resources 需下載或本地資源不存在
 
@@ -384,7 +372,6 @@ python3 -c "
 import sys
 sys.path.insert(0, '/home/a/HCSSimulation/gem5')
 from gem5.resources import obtain_resource
-path = obtain_resource('x86-hello64-static')
 print(f'Resource at: {path}')
 "
 ```
@@ -456,7 +443,6 @@ from gem5.sim.simulator import Simulator
 # TIMING CPU 精確模擬記憶體訪問延遲，適合觀察 cache 效果
 processor = SimpleProcessor(
     cpu_type=CPUTypes.TIMING,
-    isa=ISA.X86,
     num_cores=1
 )
 
@@ -519,7 +505,6 @@ board = SimpleBoard(
 )
 
 # Step 5: 設定 Workload
-binary_path = obtain_resource("x86-hello64-static")
 board.set_se_binary_workload(binary_path)
 
 # Step 6: 執行模擬
@@ -775,7 +760,6 @@ cpu_type = cpu_type_map[args.cpu]
 # 建立 Processor
 processor = SimpleProcessor(
     cpu_type=cpu_type,
-    isa=ISA.X86,
     num_cores=args.cores
 )
 
@@ -829,7 +813,6 @@ board = SimpleBoard(
 )
 
 # 設定 Workload
-binary_path = obtain_resource("x86-hello64-static")
 board.set_se_binary_workload(binary_path)
 
 # 執行
@@ -1032,7 +1015,6 @@ mem_size = parse_mem_size(args.mem_size)
 # 建立 Processor
 processor = SimpleProcessor(
     cpu_type=CPUTypes.TIMING,
-    isa=ISA.X86,
     num_cores=1
 )
 
@@ -1092,7 +1074,6 @@ board = SimpleBoard(
 )
 
 # 設定 Workload
-binary_path = obtain_resource("x86-hello64-static")
 board.set_se_binary_workload(binary_path)
 
 # 執行
@@ -1213,7 +1194,6 @@ def requires(protocol):
 # 建立 Processor，使用 TIMING，2 核心
 processor = SimpleProcessor(
     cpu_type=CPUTypes.TIMING,
-    isa=ISA.X86,
     num_cores=2  # 2 核心才能觀察一致性協議效果
 )
 
@@ -1249,7 +1229,6 @@ board = SimpleBoard(
 )
 
 # 設定 Workload
-binary_path = obtain_resource("x86-hello64-static")
 board.set_se_binary_workload(binary_path)
 
 # 執行
@@ -1367,9 +1346,7 @@ import sys
 sys.path.insert(0, '/home/a/HCSSimulation/gem5')
 from gem5.resources import list_resources
 resources = list_resources()
-# 查詢 x86 kernel 與 image
 for r in resources:
-    if 'x86' in r and 'linux' in r:
         print(r)
 "
 ```
@@ -1380,13 +1357,10 @@ for r in resources:
 
 ```bash
 cd /home/a/HCSSimulation/gem5
-ls configs/example/gem5_library | grep -i x86
 ```
 
-查看是否有 x86 FS mode 配置：
 
 ```bash
-grep -r "X86Board\|fs_workload" configs/example/gem5_library | head -10
 ```
 
 ### FS mode 注意事項（WSL2 環境）
@@ -1409,12 +1383,10 @@ grep -r "X86Board\|fs_workload" configs/example/gem5_library | head -10
 ### FS mode 模板配置
 
 ```bash
-cat > /home/a/HCSSimulation/experiments/gem5-learning/configs/fs_x86_template.py <<'EOF'
 import sys
 sys.path.insert(0, '/home/a/HCSSimulation/gem5')
 
 from gem5.resources import obtain_resource
-from gem5.components.boards.x86_board import X86Board
 from gem5.components.cachehierarchy.caches.cache_hierarchy import (
     PrivateL1PrivateL2CacheHierarchy
 )
@@ -1438,7 +1410,6 @@ CPU_TYPE = CPUTypes.TIMING  # 建議使用 TIMING 而非 KVM
 # 建立 Processor
 processor = SimpleProcessor(
     cpu_type=CPU_TYPE,
-    isa=ISA.X86,
     num_cores=1
 )
 
@@ -1480,8 +1451,6 @@ cache_hierarchy = PrivateL1PrivateL2CacheHierarchy(
     l2_cache=l2
 )
 
-# 建立 X86 Board（用於 FS mode）
-board = X86Board(
     clk_freq="3GHz",
     processor=processor,
     memory=memory,
@@ -1491,13 +1460,9 @@ board = X86Board(
 # 設定 FS workload
 # 注意：kernel 與 disk_image resource ID 需依 gem5 版本確認
 # 常見配置（需驗證是否存在）：
-# - kernel: "x86-linux-kernel"
-# - disk_image: "x86-ubuntu-18.04-img"
 
 try:
     # 嘗試下載資源（可能需要網路）
-    kernel_path = obtain_resource("x86-linux-kernel")
-    disk_image_path = obtain_resource("x86-ubuntu-18.04-img")
     
     # 建立啟動命令
     # m5 exit 用於在指定點結束模擬
@@ -1530,7 +1495,6 @@ EOF
 
 ### 檔案詳解
 
-**X86Board**：
 - FS mode 專用 board
 - 自動配置 bootloader、BIOS 等
 
@@ -1557,10 +1521,8 @@ import sys
 sys.path.insert(0, '.')
 from gem5.resources import list_resources
 
-print('Available x86 resources:')
 resources = list_resources()
 for r in sorted(resources):
-    if 'x86' in r.lower():
         print(f'  - {r}')
 "
 ```
@@ -1995,7 +1957,6 @@ def main():
     # 建立 Processor
     processor = SimpleProcessor(
         cpu_type=cpu_type,
-        isa=ISA.X86,
         num_cores=args.cores
     )
     
@@ -2060,7 +2021,6 @@ def main():
     )
     
     # 設定 Workload
-    binary_path = obtain_resource("x86-hello64-static")
     board.set_se_binary_workload(binary_path)
     
     # 執行
@@ -2152,7 +2112,6 @@ def main():
     
     # 嘗試找到 gem5.opt
     gem5_binary = None
-    for build_type in ["build/ALL/gem5.opt", "build/X86/gem5.opt"]:
         path = os.path.join(gem5_root, build_type)
         if os.path.exists(path):
             gem5_binary = path
@@ -2361,14 +2320,12 @@ cat > /home/a/HCSSimulation/experiments/gem5-learning/notes/experiment_log.md <<
 ### 系統配置
 - **gem5 binary**：`build/ALL/gem5.opt`
 - **Configuration file**：`configs/se_hello.py`
-- **Workload**：x86-hello64-static
 
 ### 硬體設置
 | 參數 | 值 |
 |---|---|
 | CPU 型別 | ATOMIC |
 | 核心數 | 1 |
-| ISA | x86 |
 | L1I Cache | 無 |
 | L1D Cache | 無 |
 | L2 Cache | 無 |
@@ -2445,7 +2402,6 @@ cat > /home/a/HCSSimulation/experiments/gem5-learning/notes/experiment_log.md <<
 - **目的**：比較不同 CPU 型別的性能
 
 ### 配置
-- 同一 workload（x86-hello64-static）
 - 使用 se_cpu_select.py 配置
 
 ### 結果
@@ -2553,7 +2509,6 @@ cat > /home/a/HCSSimulation/experiments/gem5-learning/notes/experiment_log.md <<
 
 ### Issue 1：Resource 不存在
 
-**現象**：執行時報錯 "Resource 'x86-hello64-static' not found"
 
 **原因**：gem5 resources 需下載
 
@@ -2563,7 +2518,6 @@ python3 -c "
 import sys
 sys.path.insert(0, '/home/a/HCSSimulation/gem5')
 from gem5.resources import obtain_resource
-obtain_resource('x86-hello64-static')
 "
 ```
 
@@ -2576,7 +2530,6 @@ obtain_resource('x86-hello64-static')
 **解決**：
 ```bash
 cd /home/a/HCSSimulation/gem5
-python3 `which scons` build/X86/gem5.opt -j$(nproc)
 ```
 
 ### Issue 3：O3 執行超級慢
@@ -2601,9 +2554,7 @@ EOF
 
 **現象**：
 ```
-gem5.resources.resource_manager.ResourceManager: Unable to find local copy of 'x86-hello64-static'
 gem5.resources.resource_manager.ResourceManager: Attempting to download...
-ERROR: Resource 'x86-hello64-static' not found
 ```
 
 **可能原因**：
@@ -2679,7 +2630,6 @@ ls -la build/*/gem5.opt 2>/dev/null || echo "gem5 not compiled"
 
 ```bash
 cd /home/a/HCSSimulation/gem5
-python3 `which scons` build/X86/gem5.opt -j$(nproc)
 ```
 
 **編譯需求**：
@@ -2921,7 +2871,6 @@ Warning: Overwriting existing output directory
 
 12. **FS mode 功能驗證**
     - 查詢官方範例
-    - 執行 fs_x86_template.py（使用 TIMING CPU）
     - 等待啟動（可能很慢）
 
 13. **FS mode 深度實驗**
@@ -2977,12 +2926,10 @@ cd /home/a/HCSSimulation/gem5
 
 **編譯 gem5**：
 ```bash
-python3 `which scons` build/X86/gem5.opt -j$(nproc)
 ```
 
 **執行 SE mode**：
 ```bash
-./build/X86/gem5.opt --outdir=OUTDIR CONFIG_FILE
 ```
 
 **查看統計**：

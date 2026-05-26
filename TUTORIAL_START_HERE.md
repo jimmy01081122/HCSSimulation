@@ -161,10 +161,8 @@ Before starting, ensure:
 ```bash
 # 1. Check gem5 installation
 cd /home/a/HCSSimulation/gem5
-ls -la build/ALL/gem5.opt || ls -la build/X86/gem5.opt
 
 # 2. If gem5 not compiled, compile it
-python3 `which scons` build/X86/gem5.opt -j$(nproc)
 
 # 3. Check Python version
 python3 --version  # Should be 3.6 or later
@@ -182,12 +180,12 @@ nproc  # Check available cores
 
 ### Key Features of the Tutorial
 
-✓ **CLI-Friendly**: All commands can be directly copy-pasted  
-✓ **Complete Code**: No abbreviated code snippets  
-✓ **Step-by-Step**: Each experiment has clear execution steps  
-✓ **Explanation**: Every concept linked to gem5 architecture  
-✓ **Verification**: How to confirm each step succeeded  
-✓ **Troubleshooting**: 10+ common errors with solutions  
+ **CLI-Friendly**: All commands can be directly copy-pasted  
+ **Complete Code**: No abbreviated code snippets  
+ **Step-by-Step**: Each experiment has clear execution steps  
+ **Explanation**: Every concept linked to gem5 architecture  
+ **Verification**: How to confirm each step succeeded  
+ **Troubleshooting**: 10+ common errors with solutions  
 
 ## Quick Command Reference
 
@@ -197,7 +195,6 @@ cd /home/a/HCSSimulation/gem5
 export PYTHONPATH=/home/a/HCSSimulation/gem5:$PYTHONPATH
 
 # Run SE mode
-./build/X86/gem5.opt --outdir=OUTPUT_DIR CONFIG.py [ARGS]
 
 # Parse results
 python3 ../experiments/gem5-learning/scripts/parse_stats.py \

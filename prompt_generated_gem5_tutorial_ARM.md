@@ -186,9 +186,9 @@ EOF
 
 | CPU Model | 支援 | 用途 |
 |---|---|---|
-| ATOMIC | ✅ | 快速功能驗證 |
-| TIMING | ✅ | Cache 行為分析 |
-| O3 | ✅ | 微架構詳細模擬 |
+| ATOMIC |  | 快速功能驗證 |
+| TIMING |  | Cache 行為分析 |
+| O3 |  | 微架構詳細模擬 |
 
 ### CPU 選擇配置
 
