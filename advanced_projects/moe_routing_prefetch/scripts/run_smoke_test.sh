@@ -24,21 +24,7 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-echo "=== Step 2: Running Cache Simulation ==="
-python3 python/expert_cache_sim.py \
-  --trace traces/smoke_trace.csv \
-  --hint-trace traces/smoke_hint.csv \
-  --policy routing_aware_next \
-  --cache-size 4 \
-  --dma-latency 10 \
-  --score-threshold 0.1 \
-  --output results/smoke_sim.csv
-if [ $? -ne 0 ]; then
-    echo "FAIL: Cache simulation failed."
-    exit 1
-fi
-
-echo "=== Step 3: Converting Trace to RTL Testbench Stimulus ==="
+echo "=== Step 2: Converting Trace to RTL Testbench Stimulus ==="
 python3 python/trace_to_testbench.py \
   --trace traces/smoke_trace.csv \
   --hint-trace traces/smoke_hint.csv \
@@ -49,17 +35,41 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-echo "=== Step 4: Running Verilog RTL Testbenches ==="
-bash scripts/run_iverilog_tests.sh > rtl_run.log 2>&1
-RTL_STATUS=$?
-cat rtl_run.log
-if [ $RTL_STATUS -ne 0 ]; then
-    echo "FAIL: RTL simulation testbenches failed."
-    exit 1
-fi
-
-echo "=== Step 5: Comparing Python vs RTL Counters ==="
-python3 -c "
+for repl in fifo lru; do
+    echo "=== Running test for replacement policy: $repl ==="
+    
+    if [ "$repl" = "fifo" ]; then
+        export REPL_POLICY_SEL=0
+    else
+        export REPL_POLICY_SEL=1
+    fi
+    
+    echo "--- Step A: Running Cache Simulation ($repl) ---"
+    python3 python/expert_cache_sim.py \
+      --trace traces/smoke_trace.csv \
+      --hint-trace traces/smoke_hint.csv \
+      --policy routing_aware_next \
+      --replacement-policy $repl \
+      --cache-size 4 \
+      --dma-latency 10 \
+      --score-threshold 0.1 \
+      --output results/smoke_sim.csv
+    if [ $? -ne 0 ]; then
+        echo "FAIL: Cache simulation for $repl failed."
+        exit 1
+    fi
+    
+    echo "--- Step B: Running Verilog RTL Testbench ($repl) ---"
+    bash scripts/run_iverilog_tests.sh > rtl_run.log 2>&1
+    RTL_STATUS=$?
+    cat rtl_run.log
+    if [ $RTL_STATUS -ne 0 ]; then
+        echo "FAIL: RTL simulation testbenches for $repl failed."
+        exit 1
+    fi
+    
+    echo "--- Step C: Comparing Python vs RTL Counters ($repl) ---"
+    python3 -c "
 import csv
 import re
 import sys
@@ -109,7 +119,7 @@ mapping = {
     'prefetch_filtered_count': 'cnt_prefetch_filtered',
 }
 
-print('=== Python vs RTL Counter Comparison ===')
+print('=== Python vs RTL Counter Comparison ($repl) ===')
 print('{:<30} | {:<8} | {:<8} | {:<6}'.format('Metric', 'Python', 'RTL', 'Status'))
 print('-' * 60)
 
@@ -131,11 +141,12 @@ else:
     print('COUNTER MATCH FAILED')
     sys.exit(1)
 "
-COMPARE_STATUS=$?
-if [ $COMPARE_STATUS -ne 0 ]; then
-    echo "SMOKE TEST FAILED"
-    exit 1
-fi
+    COMPARE_STATUS=$?
+    if [ $COMPARE_STATUS -ne 0 ]; then
+        echo "SMOKE TEST FAILED FOR POLICY: $repl"
+        exit 1
+    fi
+done
 
-echo "SMOKE TEST PASSED"
+echo "SMOKE TEST PASSED FOR BOTH FIFO AND LRU"
 exit 0

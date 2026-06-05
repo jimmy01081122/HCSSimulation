@@ -22,10 +22,12 @@ if [ -f tb/stimulus_req.hex ]; then
 else
     STIM_LEN=64
 fi
-echo "Detected STIM_LEN=$STIM_LEN"
-iverilog -DSTIM_LEN=$STIM_LEN -o tb/tb_top_moe_prefetch_system.vvp \
+REPL_POLICY=${REPL_POLICY_SEL:-0}
+echo "Detected STIM_LEN=$STIM_LEN, REPL_POLICY_SEL=$REPL_POLICY"
+iverilog -DSTIM_LEN=$STIM_LEN -DREPL_POLICY_SEL=$REPL_POLICY -o tb/tb_top_moe_prefetch_system.vvp \
   rtl/expert_cache_tag_array.v \
   rtl/fifo_replacement.v \
+  rtl/lru_replacement.v \
   rtl/simple_dma_model.v \
   rtl/top_moe_prefetch_system.v \
   tb/tb_top_moe_prefetch_system.v

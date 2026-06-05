@@ -113,21 +113,43 @@ module top_moe_prefetch_system #(
         .evict_prefetched(evict_prefetched)
     );
 
-    // 3. FIFO Replacement Instantiation
-    wire [WAY_W-1:0] victim_way;
-    wire             victim_valid;
+    // 3. Replacement Policies Instantiation
+    wire [WAY_W-1:0] fifo_victim_way;
+    wire             fifo_victim_valid;
+    wire [WAY_W-1:0] lru_victim_way;
+    wire             lru_victim_valid;
 
     fifo_replacement #(
         .NUM_WAYS(NUM_WAYS),
         .WAY_W(WAY_W)
-    ) replacement_inst (
+    ) fifo_repl_inst (
         .clk(clk),
         .rst_n(rst_n),
         .request_victim(dma_done),
-        .victim_way(victim_way),
-        .victim_valid(victim_valid),
+        .victim_way(fifo_victim_way),
+        .victim_valid(fifo_victim_valid),
         .fill_done(dma_done)
     );
+
+    // For LRU, access occurs on a cache hit (fifo_pop) or cache fill (dma_done)
+    wire lru_access_valid = (fifo_pop && lookup_hit) || dma_done;
+    wire [WAY_W-1:0] lru_access_way = (fifo_pop && lookup_hit) ? lookup_hit_way : victim_way;
+
+    lru_replacement #(
+        .NUM_WAYS(NUM_WAYS),
+        .WAY_W(WAY_W)
+    ) lru_repl_inst (
+        .clk(clk),
+        .rst_n(rst_n),
+        .access_valid(lru_access_valid),
+        .access_way(lru_access_way),
+        .victim_way(lru_victim_way),
+        .victim_valid(lru_victim_valid)
+    );
+
+    // Mux victim selection based on replacement_policy_sel (0=FIFO, 1=LRU)
+    wire [WAY_W-1:0] victim_way = replacement_policy_sel ? lru_victim_way : fifo_victim_way;
+    wire             victim_valid = replacement_policy_sel ? lru_victim_valid : fifo_victim_valid;
 
     // 4. DMA Model Instantiation
     wire                   dma_req_valid;

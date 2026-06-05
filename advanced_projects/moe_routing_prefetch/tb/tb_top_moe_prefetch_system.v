@@ -119,7 +119,11 @@ module tb_top_moe_prefetch_system;
         // Fixed settings
         score_threshold = 8'd25; // 0.1 * 255 = 25.5
         prefetch_enable = 1;
+`ifndef REPL_POLICY_SEL
         replacement_policy_sel = 0; // FIFO
+`else
+        replacement_policy_sel = `REPL_POLICY_SEL;
+`endif
 
         #20;
         rst_n = 1;
