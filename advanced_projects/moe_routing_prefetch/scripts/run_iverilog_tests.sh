@@ -16,6 +16,15 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
+echo "Compiling LRU replacement unit testbench..."
+iverilog -o tb/tb_lru_replacement.vvp \
+  rtl/lru_replacement.v \
+  tb/tb_lru_replacement.v
+if [ $? -ne 0 ]; then
+    echo "FAIL: Compilation of tb_lru_replacement failed."
+    exit 1
+fi
+
 echo "Compiling top prefetch system testbench..."
 if [ -f tb/stimulus_req.hex ]; then
     STIM_LEN=$(wc -l < tb/stimulus_req.hex | tr -d ' ')
@@ -41,6 +50,14 @@ OUTPUT_TAG=$(vvp tb/tb_expert_cache_tag_array.vvp)
 echo "$OUTPUT_TAG"
 if [[ ! "$OUTPUT_TAG" =~ "PASS tb_expert_cache_tag_array" ]]; then
     echo "FAIL: tb_expert_cache_tag_array test failed."
+    exit 1
+fi
+
+echo "Running LRU replacement unit test..."
+OUTPUT_LRU=$(vvp tb/tb_lru_replacement.vvp)
+echo "$OUTPUT_LRU"
+if [[ ! "$OUTPUT_LRU" =~ "PASS tb_lru_replacement" ]]; then
+    echo "FAIL: tb_lru_replacement test failed."
     exit 1
 fi
 

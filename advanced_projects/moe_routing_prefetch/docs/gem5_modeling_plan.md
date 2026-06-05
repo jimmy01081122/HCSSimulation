@@ -83,3 +83,12 @@ graph TD
 ### 5.2 系統級效能評估
 - 評估指標：`simTicks` (總執行週期數)、`hostMemoryLatency` (DRAM 動態延遲)。
 - 藉由動態調整 `DDR4_2400_8x8` 或者是 `HBM_2000_4H` 等不同的記憶體配置，評估 prefetch controller 對於 memory-bound 延遲的遮蔽百分比。
+
+---
+
+## 6. 專案定位與建模限制說明
+
+為確保專案範圍的合理性與可行性，本計劃遵循以下明確限制：
+- **不取代 RTL 模擬**：gem5 建模僅作為架構級別的 (Architecture-level) 效能分析與 sweeps 評估工具，無法代替 Verilog 模擬進行暫存器傳輸級 (RTL) 功能正確性驗收與 cycle-by-cycle 事件除錯。
+- **不進行大型 PyTorch LLM 模擬**：gem5 將使用輕量化 trace-driven 模式（如讀取 Toy PyTorch MoE 生成的 trace 進行 replay），不會加載實體 GPT 規模之大型 MoE LLM 進行 Full-System 系統仿真，以防資源耗盡 (OOM)。
+- **不取代 CUDA Profiling 與 FPGA Timing**：本建模方案聚焦於 memory loading 延遲隱藏評估，其輸出之週期數不代表實體 GPU/FPGA 上的絕對物理時間，且無法取代真實 CUDA kernel 執行時間剖析或實體 FPGA 上的 timing closure。
