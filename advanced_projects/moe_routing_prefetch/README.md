@@ -60,9 +60,20 @@ bash scripts/run_iverilog_tests.sh
 
 ---
 
-## 8. Phase B TODO
-- [ ] 補齊真實 PyTorch MoE trace 產生器 (`generate_toy_moe_trace.py`)
-- [ ] 補齊 trace 統計分析與熱力圖繪製工具 (`analyze_trace.py`)
-- [ ] 實作 LRU 替換演算法 RTL 模組 (`lru_replacement.v`)
-- [ ] 實作批量敏感度實驗與 sweeps 腳本 (`run_experiments.py`)
-- [ ] 撰寫完整專案研究報告 (`docs/final_report.md`)
+## 8. 教學實作路線 (Roadmap)
+
+本專案建議的學習與開發順序如下，循序漸進地理解軟硬體共同設計的流程：
+1. **依賴環境建置**：遵循 [docs/setup_guide.md](file:///home/a/HCSSimulation/advanced_projects/moe_routing_prefetch/docs/setup_guide.md) 建置環境並安裝 PyTorch, iverilog。
+2. **生成路由數據集 (Trace)**：學習 [python/generate_toy_moe_trace.py](file:///home/a/HCSSimulation/advanced_projects/moe_routing_prefetch/python/generate_toy_moe_trace.py) 建構小型 MoE logits 偏置，導出 demand 與 prefetch hint trace。
+3. **數據特徵分析**：使用 [python/analyze_trace.py](file:///home/a/HCSSimulation/advanced_projects/moe_routing_prefetch/python/analyze_trace.py) 分析數據並產生專家頻率、重複使用距離等統計圖。
+4. **行為級模擬器仿真**：研究 [python/expert_cache_sim.py](file:///home/a/HCSSimulation/advanced_projects/moe_routing_prefetch/python/expert_cache_sim.py) 實作的 LRU、OPT、Hot Expert 政策，並評估快取敏感度。
+5. **RTL 硬體開發與對齊**：設計並閱讀 `rtl/` 邏輯（包含 [lru_replacement.v](file:///home/a/HCSSimulation/advanced_projects/moe_routing_prefetch/rtl/lru_replacement.v) 模組），確保硬體 counters 在 smoke test 下與 Python 仿真一致。
+6. **Sweeps 實驗與繪圖**：執行 [python/run_experiments.py](file:///home/a/HCSSimulation/advanced_projects/moe_routing_prefetch/python/run_experiments.py) 生成實驗圖表並寫入報告。
+7. **架構級建模規劃**：研讀 [docs/gem5_modeling_plan.md](file:///home/a/HCSSimulation/advanced_projects/moe_routing_prefetch/docs/gem5_modeling_plan.md) 了解未來如何與 gem5 做 timing-driven 整合。
+
+---
+
+## 9. 專案驗收限制聲明
+
+> [!WARNING]
+> 本專案已通過 Phase B 正式驗收。本階段 PASS 代表在目前 smoke trace、FIFO/LRU policy、single DMA channel、現有 Python simulator 與 RTL testbench 條件下，Python counters 與 RTL counters 完全一致；不代表所有 trace、所有參數、所有硬體情境皆已完整驗證。
