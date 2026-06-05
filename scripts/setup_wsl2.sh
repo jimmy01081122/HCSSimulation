@@ -18,5 +18,5 @@ docker build -t gem5-env .
 echo "--- 初始化完成 ---"
 echo "接下來請執行以下步驟來進入開發環境並編譯 gem5 (僅需執行一次):"
 echo "1. 啟動容器: docker run --rm -it -v \$(pwd):/work gem5-env"
-echo "2. 在容器內下載 gem5: git clone https://gem5.googlesource.com/public/gem5"
+echo "2. 在容器內下載 gem5: git clone https://github.com/gem5/gem5"
 echo "3. 編譯 gem5 (建議分配足夠記憶體): cd gem5 && scons build/ARM/gem5.opt -j\$(nproc)"
