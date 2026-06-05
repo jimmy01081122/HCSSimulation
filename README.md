@@ -215,8 +215,16 @@ python3 experiments/gem5-learning/scripts/parse_stats.py \
 - 不建議提交 `gem5/` 原始碼、`build/`、大型 binary 或大量模擬輸出。
 - 新機器可依 `WSL2_GUIDE.md` 與 `scripts/setup_wsl2.sh` 重新建立環境。
 - 若編譯 gem5 時記憶體不足，請增加 Docker/WSL2 可用記憶體或降低 `-j` 平行度。
+### 進階專案
+
+advanced_projects/ 內保存從既有教學與研究方向延伸出的完整進階專案。
+
+| 專案 | 目錄 | 主題 | 重點 |
+|---|---|---|---|
+| MoE Routing-aware Prefetch | advanced_projects/moe_routing_prefetch/ | MoE expert cache 與 routing-aware prefetch | 使用 synthetic/toy MoE trace、trace-driven hint、Python cache simulator 與 Verilog RTL simulation，評估 expert cache metadata 與 prefetch controller |
 
 ## 參考文件
+
 
 - `WSL2_GUIDE.md`：Windows/WSL2 環境建置流程。
 - `docs/HANDOVER.md`：交接與專案狀態補充。
