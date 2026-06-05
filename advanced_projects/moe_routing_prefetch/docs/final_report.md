@@ -16,7 +16,7 @@ Mixture-of-Experts (MoE) 推理的核心挑戰之一在於 **Memory-bound 瓶頸
 
 ## 2. 實驗結果與深度分析 (Section C-3)
 
-我們透過批量 sweeps 敏感度實驗，評估了不同的快取配置與政策。以下為 500 個 Token (Zipf 分布, $s=1.2$) 特徵數據下的實驗成果說明：
+我們透過批量 sweeps 敏感度實驗，評估了不同的快取配置與政策。以下為 500 個 Token (Zipf 分布, s=1.2) 特徵數據下的實驗成果說明：
 
 ### 2.1 快取大小敏感度 (Cache Size Sweep)
 - **現象說明**：當快取 Way 數從 1 增加至 8 時，所有政策的 Hit Rate 均呈上升趨勢。
