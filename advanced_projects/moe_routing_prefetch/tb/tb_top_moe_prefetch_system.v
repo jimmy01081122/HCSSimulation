@@ -165,9 +165,15 @@ module tb_top_moe_prefetch_system;
             $display("cnt_prefetch_dropped:  %d", cnt_prefetch_dropped);
             $display("cnt_prefetch_filtered: %d", cnt_prefetch_filtered);
             $display("--------------------------------");
-            $display("PASS tb_top_moe_prefetch_system");
+            if (cnt_hit + cnt_miss == cnt_total_req) begin
+                $display("PASS tb_top_moe_prefetch_system");
+            end else begin
+                $display("FAIL: cnt_hit + cnt_miss != cnt_total_req");
+                $display("FAIL tb_top_moe_prefetch_system");
+            end
             $finish;
         end
     end
 
 endmodule
+
