@@ -17,7 +17,13 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "Compiling top prefetch system testbench..."
-iverilog -o tb/tb_top_moe_prefetch_system.vvp \
+if [ -f tb/stimulus_req.hex ]; then
+    STIM_LEN=$(wc -l < tb/stimulus_req.hex | tr -d ' ')
+else
+    STIM_LEN=64
+fi
+echo "Detected STIM_LEN=$STIM_LEN"
+iverilog -DSTIM_LEN=$STIM_LEN -o tb/tb_top_moe_prefetch_system.vvp \
   rtl/expert_cache_tag_array.v \
   rtl/fifo_replacement.v \
   rtl/simple_dma_model.v \

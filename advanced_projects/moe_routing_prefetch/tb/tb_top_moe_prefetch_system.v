@@ -65,9 +65,13 @@ module tb_top_moe_prefetch_system;
         .cnt_prefetch_filtered(cnt_prefetch_filtered)
     );
 
+`ifndef STIM_LEN
+`define STIM_LEN 10000
+`endif
+
     // Stimulus memory
-    reg [31:0] req_mem [0:9999];
-    reg [31:0] hint_mem [0:9999];
+    reg [31:0] req_mem [0:`STIM_LEN-1];
+    reg [31:0] hint_mem [0:`STIM_LEN-1];
     
     reg [31:0] cycle;
     integer total_stim_reqs;
@@ -86,7 +90,7 @@ module tb_top_moe_prefetch_system;
     // Load stimulus and initialize
     initial begin
         // Initialize memory with zeros to avoid warnings about uninitialized locations
-        for (idx = 0; idx < 10000; idx = idx + 1) begin
+        for (idx = 0; idx < `STIM_LEN; idx = idx + 1) begin
             req_mem[idx]  = 32'd0;
             hint_mem[idx] = 32'd0;
         end
@@ -96,7 +100,7 @@ module tb_top_moe_prefetch_system;
 
         // Count total valid requests in stimulus
         total_stim_reqs = 0;
-        for (idx = 0; idx < 10000; idx = idx + 1) begin
+        for (idx = 0; idx < `STIM_LEN; idx = idx + 1) begin
             if (req_mem[idx][31]) begin
                 total_stim_reqs = total_stim_reqs + 1;
             end
@@ -134,7 +138,7 @@ module tb_top_moe_prefetch_system;
             if (req_valid && !req_ready) begin
                 // Hold request, do not advance cycle
             end else begin
-                if (cycle < 10000) begin
+                if (cycle < `STIM_LEN) begin
                     req_valid <= req_mem[cycle][31];
                     req_expert_id <= req_mem[cycle][3:0];
 

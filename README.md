@@ -120,6 +120,13 @@ gem5 的模擬輸出位於各主題的 `m5out/` 目錄，常見檔案包含：
 |---|---|---|---|
 | MoE Routing-aware Prefetch | [advanced_projects/moe_routing_prefetch/](file:///home/a/HCSSimulation/advanced_projects/moe_routing_prefetch/) | MoE expert cache 與 routing-aware prefetch | 使用 synthetic/toy MoE trace、trace-driven hint、Python cache simulator 與 Verilog RTL simulation，評估 expert cache metadata 與 prefetch controller |
 
+### 進階專案驗收與測試
+
+針對 `advanced_projects/moe_routing_prefetch/` 專案：
+- **計數器自洽性要求**：Python 行為模擬器與 RTL 模擬器皆須滿足 $\text{cache\_hits} + \text{cache\_misses} == \text{total\_requests}$，且已發送預取數必須等於有效預取與無效預取之和（即 $\text{prefetch\_issued} == \text{prefetch\_useful} + \text{prefetch\_useless}$，在無 in-flight 殘留下）。
+- **Python 與 RTL 週期精確對齊**：在相同輸入 Trace 刺激下，Python 模擬器與 RTL 模擬器的所有計數器值必須 100% 吻合（週期精確度為 0 誤差）。
+- **自動化比對**：每次修改後應運行 [run_smoke_test.sh](file:///home/a/HCSSimulation/advanced_projects/moe_routing_prefetch/scripts/run_smoke_test.sh)，該腳本會對 Python 和 Verilog 的計數器做自動比對，若不一致將回傳非零代碼並中止整合。
+
 ## 參考文件
 
 所有參考文件已歸檔至 `docs/` 目錄：
