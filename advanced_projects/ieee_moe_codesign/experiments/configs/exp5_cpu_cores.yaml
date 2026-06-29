@@ -1,0 +1,35 @@
+# Experiment 5: CPU Core Scaling
+# Purpose: Evaluate how the number of CPU cores affects offloading strategy effectiveness
+
+experiment_name: "cpu_core_scaling"
+
+base_config:
+  num_experts: 16
+  expert_size_gb: 1.0
+  gpu_cache_capacity: 4
+  pcie_bandwidth_gbs: 16.0
+  cpu_expert_latency_ms: 4.0
+  gpu_expert_latency_ms: 0.2
+  gpu_dense_latency_ms: 0.5
+  cpu_orch_latency_ms: 0.1
+  pcie_dma_channels: 2
+  num_requests: 15
+  arrival_rate: 0.15
+  tokens_range: [16, 48]
+  layers: 6
+  zipf_alpha: 1.2
+  starvation_threshold: 5
+  random_seed: 42
+  cache_policy: "lru"
+
+sweep_variable: "cpu_cores"
+sweep_values: [2, 4, 8, 16, 32]
+
+strategies:
+  - {sched: "fcfs",   offload: "transfer", name: "FCFS_TRANSFER"}
+  - {sched: "elas",   offload: "transfer", name: "ELAS_TRANSFER"}
+  - {sched: "elas",   offload: "offload",  name: "ELAS_OFFLOAD"}
+  - {sched: "elas",   offload: "dcmd",     name: "ELAS_DCMD"}
+  - {sched: "f-elas", offload: "dcmd",     name: "F_ELAS_DCMD"}
+
+output_file: "experiments/results/exp5_cpu_cores.csv"

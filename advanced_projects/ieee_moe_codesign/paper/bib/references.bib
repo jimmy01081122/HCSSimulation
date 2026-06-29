@@ -1,0 +1,237 @@
+% ============================================================
+% HEXA-MoE: References for IEEE Paper
+% ============================================================
+
+% --- MoE Architectures ---
+
+@article{fedus2022switch,
+  title     = {Switch Transformers: Scaling to Trillion Parameter Models with Simple and Efficient Sparsity},
+  author    = {Fedus, William and Zoph, Barret and Shazeer, Noam},
+  journal   = {Journal of Machine Learning Research},
+  volume    = {23},
+  number    = {120},
+  pages     = {1--39},
+  year      = {2022}
+}
+
+@article{shazeer2017outrageously,
+  title     = {Outrageously Large Neural Networks: The Sparsely-Gated Mixture-of-Experts Layer},
+  author    = {Shazeer, Noam and Mirhoseini, Azalia and Maziarz, Krzysztof and Davis, Andy and Le, Quoc and Hinton, Geoffrey and Dean, Jeff},
+  journal   = {arXiv preprint arXiv:1701.06538},
+  year      = {2017}
+}
+
+@article{jiang2024mixtral,
+  title     = {Mixtral of Experts},
+  author    = {Jiang, Albert Q. and Sablayrolles, Alexandre and Roux, Antoine and Mensch, Arthur and Savary, Blanche and Bamford, Chris and Chaplot, Devendra Singh and de las Casas, Diego and Bressand, Emma Bou and Lenber, Gianna and others},
+  journal   = {arXiv preprint arXiv:2401.04088},
+  year      = {2024}
+}
+
+@article{dai2024deepseekmoe,
+  title     = {DeepSeekMoE: Towards Ultimate Expert Specialization in Mixture-of-Experts Language Models},
+  author    = {Dai, Damai and Deng, Chengqi and Zhao, Chenggang and Xu, R.X. and Gao, Huazuo and Chen, Deli and Li, Jiashi and Zeng, Wenge and Yu, Xingkai and Wu, Y. and others},
+  journal   = {arXiv preprint arXiv:2401.06066},
+  year      = {2024}
+}
+
+% --- MoE Systems and Serving ---
+
+@inproceedings{hwang2023tutel,
+  title     = {Tutel: Adaptive Mixture-of-Experts at Scale},
+  author    = {Hwang, Changho and Cui, Wei and Xiong, Yifan and Yang, Ziyue and Liu, Ze and Hu, Han and Wang, Zilong and Salas, Rafael and Jose, Jithin and Ram, Prabhat and Chau, Joe and Cheng, Peng and Yang, Fan and Yang, Mao and Wang, Yongqiang},
+  booktitle = {Proceedings of Machine Learning and Systems (MLSys)},
+  year      = {2023}
+}
+
+@inproceedings{rajbhandari2022deepspeedmoe,
+  title     = {DeepSpeed-MoE: Advancing Mixture-of-Experts Inference and Training to Power Next-Generation AI Scale},
+  author    = {Rajbhandari, Samyam and Li, Conglong and Yao, Zhewei and Zhang, Minjia and Aminabadi, Reza Yazdani and Awan, Ammar Ahmad and Rasley, Jeff and He, Yuxiong},
+  booktitle = {Proceedings of the 39th International Conference on Machine Learning (ICML)},
+  year      = {2022}
+}
+
+@article{he2022fastermoe,
+  title     = {FasterMoE: Modeling and Optimizing Training of Large-Scale Dynamic Pre-Trained Models},
+  author    = {He, Jiaao and Zhai, Jidong and Antunes, Tiago and Wang, Haojun and Luo, Fuwen and Shi, Shangfeng and Li, Qin},
+  journal   = {Proceedings of the 27th ACM SIGPLAN Symposium on Principles and Practice of Parallel Programming (PPoPP)},
+  year      = {2022}
+}
+
+% --- Expert Offloading ---
+
+@article{eliseev2024fast,
+  title     = {Fast Inference of Mixture-of-Experts Language Models with Offloading},
+  author    = {Eliseev, Artyom and Mazur, Denis},
+  journal   = {arXiv preprint arXiv:2312.17238},
+  year      = {2024}
+}
+
+@article{xue2024moeinfinity,
+  title     = {MoE-Infinity: Offloading-Efficient MoE Model Serving},
+  author    = {Xue, Leyang and Fu, Yao and Miao, Zhan and Lu, Wentao and Li, Bin and Wang, Jianwei},
+  journal   = {arXiv preprint arXiv:2401.14361},
+  year      = {2024}
+}
+
+% --- LLM Serving Infrastructure ---
+
+@inproceedings{kwon2023pagedattention,
+  title     = {Efficient Memory Management for Large Language Model Serving with PagedAttention},
+  author    = {Kwon, Woosuk and Li, Zhuohan and Zhuang, Siyuan and Sheng, Ying and Zheng, Lianmin and Yu, Cody Hao and Gonzalez, Joseph E. and Zhang, Hao and Stoica, Ion},
+  booktitle = {Proceedings of the 29th Symposium on Operating Systems Principles (SOSP)},
+  year      = {2023}
+}
+
+@inproceedings{sheng2023flexgen,
+  title     = {FlexGen: High-Throughput Generative Inference of Large Language Models with a Single GPU},
+  author    = {Sheng, Ying and Zheng, Lianmin and Yuan, Binhang and Li, Zhuohan and Ryabinin, Max and Chen, Beidi and Liang, Percy and R{\'e}, Christopher and Stoica, Ion and Zhang, Ce},
+  booktitle = {Proceedings of the 40th International Conference on Machine Learning (ICML)},
+  year      = {2023}
+}
+
+@inproceedings{yu2022orca,
+  title     = {Orca: A Distributed Serving System for Transformer-Based Generative Models},
+  author    = {Yu, Gyeong-In and Jeong, Joo Seong and Kim, Geon-Woo and Kim, Soojeong and Chun, Byung-Gon},
+  booktitle = {16th USENIX Symposium on Operating Systems Design and Implementation (OSDI)},
+  year      = {2022}
+}
+
+@inproceedings{aminabadi2022deepspeed,
+  title     = {DeepSpeed Inference: Enabling Efficient Inference of Transformer Models at Unprecedented Scale},
+  author    = {Aminabadi, Reza Yazdani and Rajbhandari, Samyam and Zhang, Minjia and Awan, Ammar Ahmad and Li, Cheng and Li, Du and Zheng, Elton and Rasley, Jeff and Smith, Shaden and Ruwase, Olatunji and He, Yuxiong},
+  booktitle = {SC22: International Conference for High Performance Computing, Networking, Storage and Analysis},
+  year      = {2022}
+}
+
+@article{agrawal2024sarathi,
+  title     = {SARATHI: Efficient LLM Inference by Piggybacking Decodes with Chunked Prefills},
+  author    = {Agrawal, Amey and Kedia, Ashish and Panwar, Jayashree and Mohan, Ashwin and Kwatra, Nipun and Gulavani, Bhargav S and Ramjee, Ramachandran and Tumanov, Alexey},
+  journal   = {arXiv preprint arXiv:2308.16369},
+  year      = {2024}
+}
+
+% --- Hardware Simulation ---
+
+@article{binkert2011gem5,
+  title     = {The gem5 Simulator},
+  author    = {Binkert, Nathan and Beckmann, Bradford and Black, Gabriel and Reinhardt, Steven K. and Saidi, Ali and Basu, Arkaprava and Hestness, Joel and Hower, Derek R. and Krishna, Tushar and Sardashti, Somayeh and Sen, Rathijit and Sewell, Korey and Shoaib, Muhammad and Vaish, Nilay and Hill, Mark D. and Wood, David A.},
+  journal   = {ACM SIGARCH Computer Architecture News},
+  volume    = {39},
+  number    = {2},
+  pages     = {1--7},
+  year      = {2011}
+}
+
+@article{lowe2020gem5art,
+  title     = {The gem5 Simulator: Version 20.0+},
+  author    = {Lowe-Power, Jason and Ahmad, Ayaz M and Akram, Ayaz and Alian, Mohammad and Amslinger, Rico and Andreozzi, Matteo and Beaumont, Adri{\`a} and Becker, Matthew and Beckmann, Bradford and Bhatt, Sujay and others},
+  journal   = {arXiv preprint arXiv:2007.03152},
+  year      = {2020}
+}
+
+% --- Scheduling and Queueing ---
+
+@book{harchol2013performance,
+  title     = {Performance Modeling and Design of Computer Systems: Queueing Theory in Action},
+  author    = {Harchol-Balter, Mor},
+  publisher = {Cambridge University Press},
+  year      = {2013}
+}
+
+@article{michael1996simple,
+  title     = {Simple, Fast, and Practical Non-Blocking and Blocking Concurrent Queue Algorithms},
+  author    = {Michael, Maged M. and Scott, Michael L.},
+  journal   = {Proceedings of the fifteenth annual ACM symposium on Principles of distributed computing},
+  pages     = {267--275},
+  year      = {1996}
+}
+
+% --- PCIe and Interconnects ---
+
+@inproceedings{neugebauer2018understanding,
+  title     = {Understanding PCIe Performance for End Host Networking},
+  author    = {Neugebauer, Rolf and Antichi, Gianni and Zazo, Jos{\'e} Fernando and Auber, Yury and L{\'o}pez-Buedo, Sergio and Moore, Andrew W.},
+  booktitle = {Proceedings of the 2018 Conference of the ACM Special Interest Group on Data Communication (SIGCOMM)},
+  year      = {2018}
+}
+
+% --- GPU Architecture ---
+
+@inproceedings{jia2018dissecting,
+  title     = {Dissecting the NVIDIA Volta GPU Architecture via Microbenchmarking},
+  author    = {Jia, Zhe and Maggioni, Marco and Staiger, Benjamin and Scarpazza, Daniele P.},
+  booktitle = {arXiv preprint arXiv:1804.06826},
+  year      = {2018}
+}
+
+% --- Cache Replacement ---
+
+@inproceedings{megiddo2003arc,
+  title     = {ARC: A Self-Tuning, Low Overhead Replacement Cache},
+  author    = {Megiddo, Nimrod and Modha, Dharmendra S.},
+  booktitle = {Proceedings of the 2nd USENIX Conference on File and Storage Technologies (FAST)},
+  year      = {2003}
+}
+
+% --- FuseMoE ---
+
+@article{tang2024fusemoe,
+  title     = {FuseMoE: Mixture-of-Experts Transformers for Fleximodal Fusion},
+  author    = {Tang, Xing and Song, Yunze and Wang, Yanbo and Hu, Qizheng and Bao, Yiwen and Dai, Hao and Li, Liang},
+  journal   = {arXiv preprint arXiv:2402.03226},
+  year      = {2024}
+}
+
+% --- Additional Relevant Works ---
+
+@inproceedings{lepikhin2021gshard,
+  title     = {GShard: Scaling Giant Models with Conditional Computation and Automatic Sharding},
+  author    = {Lepikhin, Dmitry and Lee, HyoukJoong and Xu, Yuanzhong and Chen, Dehao and Firat, Orhan and Huang, Yanping and Krikun, Maxim and Shazeer, Noam and Chen, Zhifeng},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year      = {2021}
+}
+
+@article{riquelme2021scaling,
+  title     = {Scaling Vision with Sparse Mixture of Experts},
+  author    = {Riquelme, Carlos and Puigcerver, Joan and Mustafa, Basil and Neumann, Maxim and Jenatton, Rodolphe and Susano Pinto, Andr{\'e} and Keysers, Daniel and Houlsby, Neil},
+  journal   = {Advances in Neural Information Processing Systems},
+  volume    = {34},
+  year      = {2021}
+}
+
+@inproceedings{gale2023megablocks,
+  title     = {MegaBlocks: Efficient Sparse Training with Mixture-of-Experts},
+  author    = {Gale, Trevor and Narayanan, Deepak and Young, Cliff and Zaharia, Matei},
+  booktitle = {Proceedings of Machine Learning and Systems (MLSys)},
+  year      = {2023}
+}
+
+@article{zhou2022mixtureofexperts,
+  title     = {Mixture-of-Experts with Expert Choice Routing},
+  author    = {Zhou, Yanqi and Lei, Tao and Liu, Hanxiao and Du, Nan and Huang, Yanping and Zhao, Vincent and Dai, Andrew and Chen, Zhifeng and Le, Quoc and Laudon, James},
+  journal   = {Advances in Neural Information Processing Systems},
+  volume    = {35},
+  year      = {2022}
+}
+
+@inproceedings{patel2024splitwise,
+  title     = {Splitwise: Efficient Generative LLM Inference Using Phase Splitting},
+  author    = {Patel, Pratyush and Choukse, Esha and Zhang, Chaojie and Shah, Anil and Goiri, {\'I}{\~{n}}igo and Maleki, Saeed and Bianchini, Ricardo},
+  booktitle = {Proceedings of the 51st International Symposium on Computer Architecture (ISCA)},
+  year      = {2024}
+}
+
+@inproceedings{zhong2024distserve,
+  title     = {DistServe: Disaggregating Prefill and Decoding for Goodput-optimized Large Language Model Serving},
+  author    = {Zhong, Yinmin and Liu, Shengyu and Chen, Junda and Hu, Jianbo and Zhu, Yibo and Liu, Xuanzhe and Jin, Xin and Zhang, Hao},
+  booktitle = {18th USENIX Symposium on Operating Systems Design and Implementation (OSDI)},
+  year      = {2024}
+}
+
+@article{du2022glam,
+  title     = {GLaM: Efficient Scaling of Language Models with Mixture-of-Experts},
+  author    = {Du, Nan and Huang, Yanping and Dai, Andrew M and Tong, Simon and Lepikhin, Dmitry and Xu, Yuanzhong and Krikun, Maxim and Zhou, Yanqi and Yu, Adams Wei and Firat, Orhan and others},
+  journal   = {Proceedings of the 39th International Conference on Machine Learning (ICML)},
+  year      = {2022}
+}

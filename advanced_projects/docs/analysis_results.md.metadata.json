@@ -1,0 +1,5 @@
+{
+  "summary":  "Comprehensive study on heterogeneous CPU-GPU MoE inference scheduling. Contains architecture design, gem5 microarchitectural simulations of task queues, system-level parameter sweeps, and hardware-software co-design recommendations.",
+  "updatedAt":  "2026-06-27T17:35:02.306881751Z",
+  "userFacing":  true
+}

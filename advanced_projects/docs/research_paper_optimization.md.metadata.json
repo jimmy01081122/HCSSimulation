@@ -1,0 +1,5 @@
+{
+  "summary":  "Academic-style research paper detailing the optimized Co-Design framework for heterogeneous MoE inference, introducing starvation-free scheduling (F-ELAS) and CPU contention-aware offloading (DCMD-Opt).",
+  "updatedAt":  "2026-06-28T01:37:08.230458537Z",
+  "userFacing":  true
+}

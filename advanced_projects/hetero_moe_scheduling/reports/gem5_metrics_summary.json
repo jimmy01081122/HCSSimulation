@@ -1,0 +1,16 @@
+{
+    "centralized": {
+        "simSeconds": 0.01843,
+        "simTicks": 18429532500,
+        "cpuCycles": 36859066,
+        "dcacheMisses": 27689,
+        "ipc": 1.971167
+    },
+    "distributed": {
+        "simSeconds": 0.000628,
+        "simTicks": 628021000,
+        "cpuCycles": 1256043,
+        "dcacheMisses": 26393,
+        "ipc": 0.881445
+    }
+}

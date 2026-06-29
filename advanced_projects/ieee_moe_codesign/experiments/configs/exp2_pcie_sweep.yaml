@@ -1,0 +1,35 @@
+# Experiment 2: PCIe Bandwidth Sweep
+# Purpose: Evaluate the impact of PCIe generation/bandwidth on latency
+
+experiment_name: "pcie_bandwidth_sweep"
+
+base_config:
+  num_experts: 16
+  expert_size_gb: 1.0
+  gpu_cache_capacity: 4
+  cpu_expert_latency_ms: 4.0
+  gpu_expert_latency_ms: 0.2
+  gpu_dense_latency_ms: 0.5
+  cpu_orch_latency_ms: 0.1
+  cpu_cores: 8
+  pcie_dma_channels: 2
+  num_requests: 15
+  arrival_rate: 0.15
+  tokens_range: [16, 48]
+  layers: 6
+  zipf_alpha: 1.2
+  starvation_threshold: 5
+  random_seed: 42
+  cache_policy: "lru"
+
+sweep_variable: "pcie_bandwidth_gbs"
+sweep_values: [8.0, 16.0, 32.0, 64.0]
+
+strategies:
+  - {sched: "fcfs",   offload: "transfer", name: "FCFS_TRANSFER"}
+  - {sched: "elas",   offload: "transfer", name: "ELAS_TRANSFER"}
+  - {sched: "elas",   offload: "offload",  name: "ELAS_OFFLOAD"}
+  - {sched: "elas",   offload: "dcmd",     name: "ELAS_DCMD"}
+  - {sched: "f-elas", offload: "dcmd",     name: "F_ELAS_DCMD"}
+
+output_file: "experiments/results/exp2_pcie_sweep.csv"
