@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  gem5-dev:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.gem5
+    container_name: gem5-dev-container
+    volumes:
+      - /home/a/gem5-new:/gem5
+      - /home/a/prototype/mena-prototype:/work
+    working_dir: /gem5
+    stdin_open: true
+    tty: true

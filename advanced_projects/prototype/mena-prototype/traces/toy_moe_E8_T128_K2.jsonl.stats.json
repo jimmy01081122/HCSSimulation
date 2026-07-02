@@ -1,0 +1,16 @@
+{
+  "cuda_available": false,
+  "gpu_name": "N/A",
+  "elapsed_time_sec": 0.024648427963256836,
+  "loads": [
+    137,
+    124,
+    112,
+    138,
+    152,
+    95,
+    142,
+    124
+  ],
+  "imbalance_ratio": 1.1875
+}
