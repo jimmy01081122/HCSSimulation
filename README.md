@@ -119,6 +119,11 @@ gem5 的模擬輸出位於各主題的 `m5out/` 目錄，常見檔案包含：
 | 專案 | 目錄 | 主題 | 重點 |
 |---|---|---|---|
 | MoE Routing-aware Prefetch | [advanced_projects/moe_routing_prefetch/](file:///home/a/HCSSimulation/advanced_projects/moe_routing_prefetch/) | MoE expert cache 與 routing-aware prefetch | 使用 synthetic/toy MoE trace、trace-driven hint、Python cache simulator 與 Verilog RTL simulation，評估 expert cache metadata 與 prefetch controller |
+| HEXA-MoE (IEEE Co-Design) | [advanced_projects/ieee_moe_codesign/](file:///home/a/HCSSimulation/advanced_projects/ieee_moe_codesign/) | 多流 MoE 推理排程軟硬體協同設計與學術研究 | 針對 IEEE 頂尖晶片與系統會議進行高階研究，提出公平性感知調度（F-ELAS）與競爭感知動態決策引擎（DCMD-Opt），在模擬器與 gem5 處理器微架構上進行多維度設計空間探索（DSE）並撰寫論文。 |
+| Heterogeneous MoE Scheduling | [advanced_projects/hetero_moe_scheduling/](file:///home/a/HCSSimulation/advanced_projects/hetero_moe_scheduling/) | 異質 CPU-GPU 任務調度與執行決策 | 在 gem5 中模擬與優化分散式專家親和佇列（Distributed Expert-Affinity Queue）以降低 CPU 鎖爭用。結合 ELAS 與 DCMD 演算法，動態決策任務 offload 到 CPU 還是傳輸到 GPU，達成數十倍加速。 |
+| MoE-HostAssist | [advanced_projects/moe_hostassist/](file:///home/a/HCSSimulation/advanced_projects/moe_hostassist/) | 主機端調度、傳輸與執行瓶頸互動分析 | 採用 SimPy 離散事件模擬，定量評估多流 MoE 在並發下的瓶頸（快取串聯失效、主機發送抖動放大效應），設計並優化 Deadline-Aware 快取協同管理（DACC）。 |
+| MoE-LLM Collaborative Memory Scheduling | [advanced_projects/discover/](file:///home/a/HCSSimulation/advanced_projects/discover/) | 資源受限平台的真實 MoE-LLM 推理加速 | 分析真實 `Qwen1.5-MoE-A2.7B` 在 `GSM8K` 上的路由特徵，提出 Layer-Temporal Affinity Cache 與協同記憶體調度器（Joint Memory Scheduler）來解決預取造成的 PCIe 頻寬雍塞，並以 SystemVerilog 驗證控制路徑模組。 |
+| MAEP Hardware Prototyping | [advanced_projects/prototype/](file:///home/a/HCSSimulation/advanced_projects/prototype/) | MoE 加速器硬體原型驗證與邊界探索 | 遵循現象學方法論，在 SystemVerilog 中實作稀疏 Markov 預測器、組相聯 Tag 快取等，並透過 Verilator 定量評估 FPGA 資源開銷、頻寬爭搶臨界點與最大時脈頻率。 |
 
 ### 進階專案驗收與測試
 
