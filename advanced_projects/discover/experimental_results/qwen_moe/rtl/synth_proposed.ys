@@ -1,0 +1,13 @@
+# Yosys synthesis script for moe_accelerator_frontend_proposed
+read_verilog -sv /home/a/discover/rtl/moe_accelerator_frontend_proposed.sv
+hierarchy -top moe_accelerator_frontend_proposed
+proc
+opt
+fsm
+opt
+memory
+opt
+techmap
+opt
+clean
+stat

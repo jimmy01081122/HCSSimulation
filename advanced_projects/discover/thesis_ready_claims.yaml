@@ -1,0 +1,23 @@
+proposal_ready:
+  - claim: "Collaborative memory scheduling (co-scheduling MoE experts and KV cache block loads) reduces memory queue stalls and latency on resource-constrained platforms."
+    evidence: "Ablation study shows full_proposed achieves 1.13x speedup and reduces queue wait times compared to expert-first baseline."
+  - claim: "A dynamic, congestion-aware prefetch drop controller reduces request deadline miss ratios under shared memory bus contention."
+    evidence: "Shedding low-confidence prefetch requests reduces deadline miss ratio from 8.00% (expert-first) and 3.00% (no_prefetch_drop) to 1.00% (full_proposed)."
+  - claim: "Criticality-aware arbitration prioritizing KV block reads over expert weight loads prevents generation steps from missing deadlines."
+    evidence: "Prioritizing critical KV blocks reduces deadline misses from 8.00% to 4.00% in criticality_only compared to expert_first."
+  - claim: "The control path of a priority-aware joint memory scheduler is lightweight and suitable for on-chip accelerator integration."
+    evidence: "Yosys 0.9 gate-level synthesis compiles the design to 3,405 flip-flops and 68,600 logic cells with 0 memory bits."
+
+discussion_only:
+  - claim: "Standalone prefetch caching can achieve high hit rates (54.40%) by predicting cross-layer dependencies."
+    evidence: "Simulation shows Layer-Temporal Affinity Cache achieves 54.40% hit rate, but traffic expansion of 14.56x (4.6 TB) saturates the bus, dropping speedup to 0.09x. This highlights that standalone prefetching requires co-designed hardware flow control."
+  - claim: "MoE routing popularity exhibits temporal reuse and moderate consecutive token overlap, which can be exploited for caching."
+    evidence: "Trace analysis reveals Qwen-MoE has a global Gini coefficient of 0.0692 (weak popularity skew), but median reuse distance of 3.0 tokens and 16.42% consecutive-step overlap."
+
+deleted:
+  - claim: "Standalone prefetch cache achieves the best overall latency."
+    reason: "Disproven. Time-accurate bus simulation shows that standalone prefetching triggers heavy bus contention, resulting in a 10x latency penalty (0.09x speedup)."
+  - claim: "Proposed scheduling policies outperform the Oracle prefetcher."
+    reason: "Disproven. The Oracle prefetcher represents the absolute mathematical limit (1.44x speedup, 97.60% hit rate) under bus capacity bounds."
+  - claim: "MoE routing popularity is highly skewed, making static caching highly effective."
+    reason: "Disproven. Global popularity skew is very low (Gini = 0.0692). Caching must exploit temporal locality rather than static hot experts."

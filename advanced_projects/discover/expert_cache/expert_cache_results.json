@@ -1,0 +1,90 @@
+{
+    "no_cache": {
+        "hit_rate": 0.0,
+        "miss_rate": 1.0,
+        "prefetch_accuracy": 0.0,
+        "useless_prefetch_ratio": 0.0,
+        "evictions": 0,
+        "expert_traffic_mb": 196608.0,
+        "estimated_stall_ms": 12288.0,
+        "estimated_latency_ms": 19968.0,
+        "speedup_vs_no_cache": 1.0
+    },
+    "lru": {
+        "hit_rate": 0.08984375,
+        "miss_rate": 0.91015625,
+        "prefetch_accuracy": 0.0,
+        "useless_prefetch_ratio": 0.0,
+        "evictions": 1386,
+        "expert_traffic_mb": 178944.0,
+        "estimated_stall_ms": 11184.0,
+        "estimated_latency_ms": 12464.0,
+        "speedup_vs_no_cache": 1.602053915275995
+    },
+    "lfu": {
+        "hit_rate": 0.29296875,
+        "miss_rate": 0.70703125,
+        "prefetch_accuracy": 0.0,
+        "useless_prefetch_ratio": 0.0,
+        "evictions": 1074,
+        "expert_traffic_mb": 139008.0,
+        "estimated_stall_ms": 8688.0,
+        "estimated_latency_ms": 9968.0,
+        "speedup_vs_no_cache": 2.0032102728731944
+    },
+    "static_hot_expert": {
+        "hit_rate": 0.5833333333333334,
+        "miss_rate": 0.4166666666666667,
+        "prefetch_accuracy": 0.0,
+        "useless_prefetch_ratio": 0.0,
+        "evictions": 0,
+        "expert_traffic_mb": 81920.0,
+        "estimated_stall_ms": 5120.0,
+        "estimated_latency_ms": 6400.0,
+        "speedup_vs_no_cache": 3.12
+    },
+    "oracle_prefetch": {
+        "hit_rate": 0.9921875,
+        "miss_rate": 0.0078125,
+        "prefetch_accuracy": 1.0,
+        "useless_prefetch_ratio": 0.0,
+        "evictions": 1261,
+        "expert_traffic_mb": 162944.0,
+        "estimated_stall_ms": 96.0,
+        "estimated_latency_ms": 1376.0,
+        "speedup_vs_no_cache": 14.511627906976743
+    },
+    "layer_aware_lru": {
+        "hit_rate": 0.08984375,
+        "miss_rate": 0.91015625,
+        "prefetch_accuracy": 0.0,
+        "useless_prefetch_ratio": 0.0,
+        "evictions": 1386,
+        "expert_traffic_mb": 178944.0,
+        "estimated_stall_ms": 11184.0,
+        "estimated_latency_ms": 12464.0,
+        "speedup_vs_no_cache": 1.602053915275995
+    },
+    "temporal_window_prefetch": {
+        "hit_rate": 0.3307291666666667,
+        "miss_rate": 0.6692708333333334,
+        "prefetch_accuracy": 0.9868073878627969,
+        "useless_prefetch_ratio": 0.013192612137203167,
+        "evictions": 1395,
+        "expert_traffic_mb": 180096.0,
+        "estimated_stall_ms": 8224.0,
+        "estimated_latency_ms": 2312.0,
+        "speedup_vs_no_cache": 8.636678200692042
+    },
+    "layer_temporal_affinity_cache": {
+        "hit_rate": 0.8268229166666666,
+        "miss_rate": 0.17317708333333334,
+        "prefetch_accuracy": 0.9836488812392427,
+        "useless_prefetch_ratio": 0.016351118760757316,
+        "evictions": 1416,
+        "expert_traffic_mb": 182784.0,
+        "estimated_stall_ms": 2128.0,
+        "estimated_latency_ms": 1288.0,
+        "speedup_vs_no_cache": 15.503105590062113
+    }
+}

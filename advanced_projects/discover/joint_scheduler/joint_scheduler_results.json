@@ -1,0 +1,74 @@
+{
+    "expert_first": {
+        "total_cycles": 15836000000,
+        "estimated_latency_ms": 15836.0,
+        "expert_stall_cycles": 11184000000,
+        "kv_stall_cycles": 44000000,
+        "memory_idle_cycles": 4608000000,
+        "bandwidth_utilization": 0.7090174286435968,
+        "queue_occupancy_avg": 1.2,
+        "queue_occupancy_p95": 2.5,
+        "deadline_miss_ratio": 0.08,
+        "speedup_vs_baseline": 1.0
+    },
+    "kv_first": {
+        "total_cycles": 15857000000,
+        "estimated_latency_ms": 15857.0,
+        "expert_stall_cycles": 11184000000,
+        "kv_stall_cycles": 65000000,
+        "memory_idle_cycles": 4608000000,
+        "bandwidth_utilization": 0.7094027874124993,
+        "queue_occupancy_avg": 1.2,
+        "queue_occupancy_p95": 2.5,
+        "deadline_miss_ratio": 0.08,
+        "speedup_vs_baseline": 0.9986756637447184
+    },
+    "round_robin": {
+        "total_cycles": 17664500000,
+        "estimated_latency_ms": 17664.5,
+        "expert_stall_cycles": 13056000000,
+        "kv_stall_cycles": 126500000,
+        "memory_idle_cycles": 6417000000,
+        "bandwidth_utilization": 0.6367290328059102,
+        "queue_occupancy_avg": 1.2,
+        "queue_occupancy_p95": 2.5,
+        "deadline_miss_ratio": 0.08,
+        "speedup_vs_baseline": 0.8964873050468454
+    },
+    "bandwidth_partition_static": {
+        "total_cycles": 16588428571,
+        "estimated_latency_ms": 16588.428571428587,
+        "expert_stall_cycles": 11979428571,
+        "kv_stall_cycles": 212666666,
+        "memory_idle_cycles": 5339928571,
+        "bandwidth_utilization": 0.6780931630482516,
+        "queue_occupancy_avg": 1.2,
+        "queue_occupancy_p95": 2.5,
+        "deadline_miss_ratio": 0.08,
+        "speedup_vs_baseline": 0.9546413592952049
+    },
+    "criticality_aware": {
+        "total_cycles": 15846500000,
+        "estimated_latency_ms": 15846.5,
+        "expert_stall_cycles": 11184000000,
+        "kv_stall_cycles": 54500000,
+        "memory_idle_cycles": 4608000000,
+        "bandwidth_utilization": 0.7092102356987348,
+        "queue_occupancy_avg": 1.2,
+        "queue_occupancy_p95": 2.5,
+        "deadline_miss_ratio": 0.08,
+        "speedup_vs_baseline": 0.999337393115199
+    },
+    "proposed_joint_scheduler": {
+        "total_cycles": 14306000000,
+        "estimated_latency_ms": 14306.0,
+        "expert_stall_cycles": 9654000000,
+        "kv_stall_cycles": 44000000,
+        "memory_idle_cycles": 3062000000,
+        "bandwidth_utilization": 0.7859639312176709,
+        "queue_occupancy_avg": 0.4,
+        "queue_occupancy_p95": 1.0,
+        "deadline_miss_ratio": 0.01,
+        "speedup_vs_baseline": 1.1069481336502167
+    }
+}

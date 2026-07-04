@@ -1,0 +1,101 @@
+{
+    "full_kv": {
+        "kv_memory_mb": 256.0,
+        "kv_traffic_mb_per_token": 73.5,
+        "compression_ratio": 1.25,
+        "eviction_count": 32,
+        "recomputation_count": 2745,
+        "estimated_latency_ms": 89757.0,
+        "speedup_vs_full_kv": 1.0,
+        "approximation_risk_score": 0.4,
+        "quality_risk_level": "Medium"
+    },
+    "paged_kv": {
+        "kv_memory_mb": 256.0,
+        "kv_traffic_mb_per_token": 73.5,
+        "compression_ratio": 1.25,
+        "eviction_count": 32,
+        "recomputation_count": 2784,
+        "estimated_latency_ms": 89952.0,
+        "speedup_vs_full_kv": 0.9978321771611526,
+        "approximation_risk_score": 0.4,
+        "quality_risk_level": "Medium"
+    },
+    "sliding_window": {
+        "kv_memory_mb": 256.0,
+        "kv_traffic_mb_per_token": 62.77734375,
+        "compression_ratio": 1.25,
+        "eviction_count": 32,
+        "recomputation_count": 0,
+        "estimated_latency_ms": 65052.00000000001,
+        "speedup_vs_full_kv": 1.3797731045932484,
+        "approximation_risk_score": 0.8,
+        "quality_risk_level": "High"
+    },
+    "uniform_int8_kv": {
+        "kv_memory_mb": 160.0,
+        "kv_traffic_mb_per_token": 36.75,
+        "compression_ratio": 2.0,
+        "eviction_count": 0,
+        "recomputation_count": 480,
+        "estimated_latency_ms": 40800.0,
+        "speedup_vs_full_kv": 2.199926470588235,
+        "approximation_risk_score": 0.2,
+        "quality_risk_level": "Low"
+    },
+    "uniform_int4_kv": {
+        "kv_memory_mb": 80.0,
+        "kv_traffic_mb_per_token": 18.375,
+        "compression_ratio": 4.0,
+        "eviction_count": 0,
+        "recomputation_count": 480,
+        "estimated_latency_ms": 21984.0,
+        "speedup_vs_full_kv": 4.082832969432315,
+        "approximation_risk_score": 0.6,
+        "quality_risk_level": "Medium"
+    },
+    "recency_eviction": {
+        "kv_memory_mb": 256.0,
+        "kv_traffic_mb_per_token": 73.5,
+        "compression_ratio": 1.25,
+        "eviction_count": 32,
+        "recomputation_count": 2784,
+        "estimated_latency_ms": 89952.0,
+        "speedup_vs_full_kv": 0.9978321771611526,
+        "approximation_risk_score": 0.4,
+        "quality_risk_level": "Medium"
+    },
+    "expert_guided_kv_priority": {
+        "kv_memory_mb": 256.0,
+        "kv_traffic_mb_per_token": 73.5,
+        "compression_ratio": 1.25,
+        "eviction_count": 32,
+        "recomputation_count": 2549,
+        "estimated_latency_ms": 88777.0,
+        "speedup_vs_full_kv": 1.0110388952093448,
+        "approximation_risk_score": 0.15,
+        "quality_risk_level": "Low"
+    },
+    "attention_locality_proxy": {
+        "kv_memory_mb": 160.0,
+        "kv_traffic_mb_per_token": 36.75,
+        "compression_ratio": 2.0,
+        "eviction_count": 0,
+        "recomputation_count": 480,
+        "estimated_latency_ms": 40800.0,
+        "speedup_vs_full_kv": 2.199926470588235,
+        "approximation_risk_score": 0.2,
+        "quality_risk_level": "Low"
+    },
+    "hybrid_recency_expert_policy": {
+        "kv_memory_mb": 160.0,
+        "kv_traffic_mb_per_token": 36.75,
+        "compression_ratio": 2.0,
+        "eviction_count": 0,
+        "recomputation_count": 480,
+        "estimated_latency_ms": 40800.0,
+        "speedup_vs_full_kv": 2.199926470588235,
+        "approximation_risk_score": 0.2,
+        "quality_risk_level": "Low"
+    }
+}

@@ -1,0 +1,163 @@
+routing_locality:
+  gini_coefficient: 0.0692
+  median_reuse_distance_tokens: 3.0
+  consecutive_token_overlap_percent: 16.42
+  hot_expert_ratio_80_20: 0.7667
+expert_cache_simulation:
+  no_cache:
+    hit_rate: 0.0
+    traffic_mb: 405504.0
+    exposed_stall_ms: 25344.00000000047
+    speedup: 1.0
+  lru:
+    hit_rate: 0.2196969696969697
+    traffic_mb: 316416.0
+    exposed_stall_ms: 19776.00000000004
+    speedup: 1.272460364063438
+  static_hot_expert:
+    hit_rate: 0.2784090909090909
+    traffic_mb: 292608.0
+    exposed_stall_ms: 18287.999999999905
+    speedup: 1.3723875870804623
+  oracle_prefetch:
+    hit_rate: 0.976010101010101
+    traffic_mb: 287744.0
+    exposed_stall_ms: 17359.416666666646
+    speedup: 1.4431099785879398
+  layer_temporal_affinity_cache:
+    hit_rate: 0.5440340909090909
+    traffic_mb: 4606464.0
+    exposed_stall_ms: 287838.99999999814
+    speedup: 0.09013549440379563
+kv_cache_phi2_calibration:
+  full_kv:
+    peak_memory_mb: 255.0
+    latency_ms: 250508.0
+    speedup: 1.0
+    risk: Medium
+  paged_kv:
+    peak_memory_mb: 255.0
+    latency_ms: 250848.0
+    speedup: 1.0
+    risk: Medium
+  sliding_window:
+    peak_memory_mb: 255.0
+    latency_ms: 65328.0
+    speedup: 3.83
+    risk: High
+  uniform_int4_kv:
+    peak_memory_mb: 200.0
+    latency_ms: 50208.0
+    speedup: 4.99
+    risk: Medium
+  hybrid_recency_expert_policy:
+    peak_memory_mb: 255.0
+    latency_ms: 124288.0
+    speedup: 2.02
+    risk: Low
+joint_scheduler_ablation:
+  expert_first:
+    latency_ms: 26798.5
+    expert_stall_cycles: 19776000000
+    kv_stall_cycles: 3024500000
+    bandwidth_utilization: 0.7422990092729069
+    offered_load_ratio: 0.7422990092729069
+    deadline_miss_ratio: 0.08
+    speedup: 1.0
+  kv_first:
+    latency_ms: 26350.5
+    expert_stall_cycles: 16730000000
+    kv_stall_cycles: 116500000
+    bandwidth_utilization: 0.7549192614940893
+    offered_load_ratio: 0.7549192614940893
+    deadline_miss_ratio: 0.04
+    speedup: 1.017001574922677
+  round_robin:
+    latency_ms: 29146.5
+    expert_stall_cycles: 19414000000
+    kv_stall_cycles: 228500000
+    bandwidth_utilization: 0.6825004717547561
+    offered_load_ratio: 0.6825004717547561
+    deadline_miss_ratio: 0.08
+    speedup: 0.9194414423687235
+  bandwidth_partition_static:
+    latency_ms: 27484.785714285714
+    expert_stall_cycles: 17602952380
+    kv_stall_cycles: 377833333
+    bandwidth_utilization: 0.7237640564779995
+    offered_load_ratio: 0.7237640564779995
+    deadline_miss_ratio: 0.08
+    speedup: 0.9750303414616398
+  criticality_only:
+    latency_ms: 26350.5
+    expert_stall_cycles: 16730000000
+    kv_stall_cycles: 116500000
+    bandwidth_utilization: 0.7549192614940893
+    offered_load_ratio: 0.7549192614940893
+    deadline_miss_ratio: 0.04
+    speedup: 1.017001574922677
+  confidence_only:
+    latency_ms: 29752.5
+    expert_stall_cycles: 620000000
+    kv_stall_cycles: 116500000
+    bandwidth_utilization: 0.6906478447189311
+    offered_load_ratio: 0.690782287202756
+    deadline_miss_ratio: 0.08
+    speedup: 0.9007142256953197
+  deadline_only:
+    latency_ms: 26350.5
+    expert_stall_cycles: 16730000000
+    kv_stall_cycles: 116500000
+    bandwidth_utilization: 0.7549192614940893
+    offered_load_ratio: 0.7549192614940893
+    deadline_miss_ratio: 0.04
+    speedup: 1.017001574922677
+  no_prefetch_drop:
+    latency_ms: 23326.5
+    expert_stall_cycles: 13542000000
+    kv_stall_cycles: 280500000
+    bandwidth_utilization: 0.8603305253681436
+    offered_load_ratio: 1.492058388528069
+    deadline_miss_ratio: 0.03
+    speedup: 1.1488435899084732
+  no_overlap:
+    latency_ms: 26560.5
+    expert_stall_cycles: 13300000000
+    kv_stall_cycles: 116500000
+    bandwidth_utilization: 0.7549744921970595
+    offered_load_ratio: 1.333578057641987
+    deadline_miss_ratio: 0.08
+    speedup: 1.008960674686094
+  full_proposed:
+    latency_ms: 23786.5
+    expert_stall_cycles: 14038000000
+    kv_stall_cycles: 244500000
+    bandwidth_utilization: 0.8430202005339162
+    offered_load_ratio: 1.489100960628928
+    deadline_miss_ratio: 0.01
+    speedup: 1.1266264477749983
+rtl_python_verification_alignment:
+  total_requests: 11734
+  total_expert_requests: 4232
+  total_kv_requests: 1285
+  deadline_miss_ratio_rtl: 5.31%
+  python_vs_rtl_mismatch_cycles: 26159
+  max_cycle_error: 0
+  expert_demand:
+    served_hits: 957
+    served_loads: 3274
+    misses: 3275
+    deadline_misses: 1122
+  expert_prefetch:
+    dropped_due_to_congestion_confidence: 2764
+    queued: 2911
+    served: 21
+  kv_demand:
+    served_hits: 1280
+    served_loads: 5
+    misses: 5
+    deadline_misses: 0
+  synthesis:
+    logic_cells: 68600
+    flip_flops: 3405
+    memory_bits: 0

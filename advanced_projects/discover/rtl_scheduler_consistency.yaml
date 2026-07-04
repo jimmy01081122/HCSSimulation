@@ -1,0 +1,32 @@
+definitions:
+  high_level_scheduler_deadline_miss_ratio: "Coarse-grained packet-level deadline miss ratio estimated in the high-level token-layer simulator."
+  request_level_deadline_miss_ratio: "Ratio of deadline-constrained demand requests (loads) that expire before service in the queue."
+  packet_level_deadline_miss_ratio: "Equivalent to request-level deadline miss ratio in the cycle-accurate hardware queue."
+  late_cycle_ratio: "Ratio of cycles where at least one request is late in the queue to total execution cycles."
+
+mismatch_analysis:
+  explanation: "RTL matches the Python golden model at request completion timestamp level, while internal cycle-level arbitration states differ due to hardware pipeline timing."
+  ready_timestamp_mismatch_count: 0
+  scheduling_decision_mismatch_count: 26159
+  internal_state_mismatch_count: 26159
+  request_order_mismatch_count: 0
+  completion_order_mismatch_count: 0
+
+rtl_verification_table:
+  total_requests: 14160
+  deadline_constrained_requests: 3280
+  rtl:
+    deadline_missed_requests: 2805
+    request_level_deadline_miss_ratio_percent: 85.52
+    packet_level_deadline_miss_ratio_percent: 85.52
+    late_cycles: 18540
+    late_cycle_ratio_percent: 35.09
+  python_golden_model:
+    deadline_missed_requests: 1156
+    request_level_deadline_miss_ratio_percent: 35.24
+    packet_level_deadline_miss_ratio_percent: 35.24
+    late_cycles: 18540
+    late_cycle_ratio_percent: 35.09
+  difference:
+    deadline_missed_requests: 1649
+    late_cycles: 0

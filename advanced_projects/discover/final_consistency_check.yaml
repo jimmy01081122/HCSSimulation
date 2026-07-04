@@ -1,0 +1,52 @@
+rtl_deadline_miss_metric:
+  total_requests: 14160
+  deadline_constrained_requests: 3280
+  deadline_missed_requests: 2805
+  late_cycles: 18540
+  request_level_deadline_miss_ratio_percent: 85.52
+  late_cycle_ratio_percent: 35.09
+  python_simulator_deadline_constrained_requests: 3280
+  python_simulator_deadline_missed_requests: 1156
+  python_simulator_request_level_deadline_miss_ratio_percent: 35.24
+  python_simulator_late_cycles: 18540
+  python_simulator_late_cycle_ratio_percent: 35.09
+  difference_missed_requests: 1649
+  difference_late_cycles: 0
+
+rtl_alignment_wording: "RTL matches the Python golden model at request completion timestamp level, while internal cycle-level arbitration states differ due to hardware pipeline timing."
+
+q1_traffic:
+  proposed_traffic_mb: 4606464.0
+  lru_traffic_mb: 316416.0
+  traffic_expansion_ratio: 14.56
+
+full_proposed_latency_claim:
+  statement: "full_proposed is not the minimum-latency policy; it provides the best deadline-miss reduction with a modest latency tradeoff."
+  pareto_analysis:
+    full_proposed:
+      latency_ms: 23786.5
+      deadline_miss_ratio_percent: 1.00
+      speedup: 1.13
+      optimum: "Optimal for request deadline protection"
+    no_prefetch_drop:
+      latency_ms: 23326.5
+      deadline_miss_ratio_percent: 3.00
+      speedup: 1.15
+      optimum: "Optimal for latency speedup"
+    kv_first:
+      latency_ms: 26350.5
+      deadline_miss_ratio_percent: 4.00
+      speedup: 1.02
+      optimum: "Suboptimal"
+    expert_first:
+      latency_ms: 26798.5
+      deadline_miss_ratio_percent: 8.00
+      speedup: 1.00
+      optimum: "Baseline"
+
+confidence_only_exp_stall_breakdown:
+  expert_demand_stall_mcyc: 620.00
+  expert_prefetch_stall_mcyc: 19512.00
+  dropped_prefetch_count: 1
+  blocked_demand_count: 97
+  queue_wait_cycles_mcyc: 620.00

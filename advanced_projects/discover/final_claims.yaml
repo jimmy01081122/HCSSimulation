@@ -1,0 +1,29 @@
+safe_proposal_claims:
+  - claim: "Collaborative memory scheduling (co-scheduling MoE experts and KV cache block loads) reduces memory latency and queue stalls on resource-constrained platforms."
+    evidence: "Ablation study shows full_proposed achieves a 1.13x speedup and reduces queue wait times compared to the expert-first baseline."
+  - claim: "Criticality-aware arbitration prioritizing critical KV cache reads over expert loads reduces packet deadline misses."
+    evidence: "Prioritizing critical KV blocks reduces deadline misses from 8.00% to 4.00% in criticality_only compared to expert_first."
+
+simulation_only_claims:
+  - claim: "KV Cache Compression via uniform 4-bit quantization achieves 4.99x speedup under memory constraint calibration to microsoft/phi-2 dimensions."
+    caveat: "Quantization latency and approximation risks are simulated at high-level only; not implemented in RTL."
+  - claim: "A dynamic, congestion-aware prefetch drop controller reduces request deadline miss ratios under shared memory bus contention."
+    evidence: "Shedding low-confidence prefetch requests reduces high-level scheduler deadline miss ratio to 1.00%."
+
+rtl_feasibility_only_claims:
+  - claim: "The control path of a priority-aware joint memory scheduler is synthesizable and has a low gate count."
+    evidence: "Yosys 0.9 gate-level synthesis compiles the design to 3,405 flip-flops and 68,600 logic cells with 0 memory bits."
+  - claim: "RTL matches the Python golden model UUT emulator at the request completion timestamp level."
+    evidence: "Verification shows 0 cycle error on completion ready timestamps, though internal scheduling decisions differ by 26,159 cycles due to pipeline registers."
+  - claim: "RTL request-level deadline behavior requires further microarchitectural tuning."
+    evidence: "Under tight cycles constraints, UUT has 85.52% request-level deadline miss ratio, showing that larger buffers or pipeline bypasses are required."
+
+claims_to_delete:
+  - claim: "Complete cycle-by-cycle register equivalence between the RTL and Python models."
+    reason: "Disproven. Mismatch count shows 26,159 cycles of scheduling decision differences due to pipeline registers."
+  - claim: "Proposed standalone expert cache policy alone achieves the best latency."
+    reason: "Disproven. High-level simulation shows that standalone prefetching triggers heavy bus contention, resulting in a 10x latency penalty (0.09x speedup)."
+  - claim: "Proposed scheduling policies exceed the Oracle prefetcher."
+    reason: "Disproven. The Oracle prefetcher represents the absolute mathematical limit (1.44x speedup, 97.60% hit rate) under bus capacity bounds."
+  - claim: "MoE routing popularity is highly skewed, making static caching highly effective."
+    reason: "Disproven. Global popularity skew is very low (Gini = 0.0692)."

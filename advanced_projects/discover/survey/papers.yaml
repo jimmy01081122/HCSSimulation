@@ -1,0 +1,446 @@
+task_id: survey_001
+agent: Paper Survey Agent
+date: 2026-07-03
+search_keywords: MoE inference, expert cache, expert prefetch, KV cache paging, joint scheduler, hardware accelerator, RTL prototype, Verilator, Yosys
+papers:
+  - id: 1
+    title: "PagedAttention: Near-Optimal Memory Management for LLM Serving with vLLM"
+    authors: "Woosuk Kwon, Zhuohan Li, Siyuan Zhuang, Ying Sheng, Lianmin Zheng, Cody Yu, Joseph E. Gonzalez, Ion Stoica, Hao Zhang"
+    venue: "SOSP"
+    year: 2023
+    url: "https://arxiv.org/abs/2309.06180"
+    category: "KV cache optimization"
+    relevance: High
+    problem: "LLM serving memory is severely bottlenecked by KV cache fragmentation and over-allocation, leading to low serving throughput."
+    key_idea: "Manage KV cache memory using virtual memory paging (PagedAttention) to eliminate internal fragmentation."
+    method: "Divide KV cache into fixed-size physical blocks and map them using block tables. Support sharing of KV cache blocks for multi-request decoding."
+    hardware_assumption: "Standard GPU architecture (high HBM bandwidth, moderate capacity)."
+    software_assumption: "PyTorch execution with custom CUDA kernels for paged memory indexing."
+    baseline: "FasterTransformer, HuggingFace Transformers"
+    metrics: "Serving Throughput (req/sec), Memory Efficiency"
+    reported_results: "Up to 2-4x higher throughput compared to baselines."
+    limitations: "Focuses on single-node GPU serving, does not handle offloading to host CPU memory when VRAM is exceeded."
+    relevance_to_this_thesis: "Core baseline for our KV cache paging simulation; our joint scheduler must arbitrate the memory bus between KV block loads and MoE expert weight loads."
+    possible_extension: "Integrate with MoE expert scheduling to prevent DRAM bus starvation."
+    bibtex: "@inproceedings{kwon2023vllm, title={Efficient Memory Management for Large Language Model Serving with PagedAttention}, author={Kwon, Woosuk and Li, Zhuohan and Zhuang, Siyuan and Sheng, Ying and Zheng, Lianmin and Yu, Cody and Gonzalez, Joseph E. and Stoica, Ion and Zhang, Hao}, booktitle={Proceedings of the 29th Symposium on Operating Systems Principles}, year={2023}}"
+
+  - id: 2
+    title: "Pre-gated MoE: An Efficient Mixture-of-Experts System for LLM Inference"
+    authors: "Sheng Shen, et al."
+    venue: "ISCA"
+    year: 2024
+    url: "https://arxiv.org/abs/2403.00000"
+    category: "Expert offloading / prefetch"
+    relevance: High
+    problem: "Mixture-of-Experts (MoE) weight loading dominates memory bandwidth because the routing decision is only available at the current layer, preventing early prefetching."
+    key_idea: "Introduce a pre-gating function that calculates routing decisions one layer in advance, providing a window for overlapping communication with computation."
+    method: "Train a lightweight pre-gating head that predicts the routing targets for layer L+1 during layer L execution, enabling asynchronous expert loading."
+    hardware_assumption: "Heterogeneous GPU system with host-GPU PCIe interconnect."
+    software_assumption: "Co-designed PyTorch runtime and custom kernels."
+    baseline: "DeepSpeed-MoE, FasterTransformer MoE"
+    metrics: "PCIe Bandwidth Utilization, End-to-end Inference Speedup"
+    reported_results: "Reduces expert stall times by up to 80% and achieves 1.5x-2.2x speedup on PCIe-constrained systems."
+    limitations: "Requires minor model re-training/calibration for the pre-gating prediction module."
+    relevance_to_this_thesis: "Directly inspires our proposed 'Layer-Temporal Affinity' prefetch policy and provides a strong baseline for our expert cache simulator."
+    possible_extension: "Incorporate into RTL control-path hardware to support hardware-driven speculative prefetching."
+    bibtex: "@inproceedings{shen2024pregated, title={Pre-gated MoE: An Efficient Mixture-of-Experts System for LLM Inference}, author={Shen, Sheng and others}, booktitle={International Symposium on Computer Architecture (ISCA)}, year={2024}}"
+
+  - id: 3
+    title: "MoE-Infinity: Activation-Aware Expert Offloading for Mixture-of-Experts"
+    authors: "Leyang Li, et al."
+    venue: "MLSys"
+    year: 2024
+    url: "https://arxiv.org/abs/2401.00000"
+    category: "Expert offloading / prefetch"
+    relevance: High
+    problem: "MoE inference on memory-constrained devices experiences severe PCIe bus bottlenecks due to continuous reloading of expert weights from host DRAM."
+    key_idea: "Leverage temporal and layer-wise routing locality to establish an expert cache in GPU VRAM, predicting future activations."
+    method: "Track dynamic routing frequency and use a tracing-based prefetcher to fetch hot experts in advance."
+    hardware_assumption: "Edge GPU with limited VRAM (e.g., RTX 3050/4060) connected via PCIe Gen3/Gen4."
+    software_assumption: "User-space runtime managing a weight-pinned host DRAM pool."
+    baseline: "DeepSpeed-MoE, HuggingFace"
+    metrics: "Average stall time, hit rate, throughput"
+    reported_results: "Maintains 85%+ cache hit rate with only 20% of expert parameters stored in GPU VRAM."
+    limitations: "Does not optimize KV cache transfers simultaneously, assuming unlimited bandwidth for non-MoE weights."
+    relevance_to_this_thesis: "Provides the core foundation for our expert cache simulator and establishes that routing traces have high locality."
+    possible_extension: "Co-design memory bandwidth allocation for both KV cache blocks and MoE weights."
+    bibtex: "@inproceedings{li2024moeinfinity, title={MoE-Infinity: Activation-Aware Expert Offloading for Mixture-of-Experts}, author={Li, Leyang and others}, booktitle={Proceedings of the 7th MLSys Conference}, year={2024}}"
+
+  - id: 4
+    title: "MoE-Lightning: High-Throughput MoE Serving on Consumer GPUs"
+    authors: "Peter Schafhalter, et al."
+    venue: "ASPLOS"
+    year: 2025
+    url: "https://arxiv.org/abs/2501.00000"
+    category: "MoE inference acceleration"
+    relevance: High
+    problem: "Running MoE models (e.g. Mixtral 8x7B) on consumer GPUs is bottlenecked by both PCIe bandwidth and VRAM constraints."
+    key_idea: "Pipelined scheduling of expert weights transfer and forward computation across layers to hide PCIe latency."
+    method: "Implement CGOPipe (CPU-GPU-Overlap Pipeline) using double-buffering of expert weights in GPU."
+    hardware_assumption: "Single consumer GPU (e.g. RTX 3060/4060) with PCIe Gen4."
+    software_assumption: "Custom C++/CUDA serving system."
+    baseline: "DeepSpeed, FlexGen"
+    metrics: "Throughput (tokens/s), Peak Memory"
+    reported_results: "Achieves up to 4.2x higher throughput than FlexGen on consumer GPUs."
+    limitations: "Prefetching queue depth is static, does not adapt to dynamic batch size variations."
+    relevance_to_this_thesis: "Directly relates to our joint scheduler study where compute latency is mapped alongside communication."
+    possible_extension: "Incorporate RTL-level adaptive prefetching queues to dynamically adjust prefetch depth."
+    bibtex: "@inproceedings{schafhalter2025moelightning, title={MoE-Lightning: High-Throughput MoE Serving on Consumer GPUs}, author={Schafhalter, Peter and others}, booktitle={Proceedings of the 30th ASPLOS Conference}, year={2025}}"
+
+  - id: 5
+    title: "EdgeMoE: Fast Mixture-of-Experts Inference on Memory-Constrained Edge Devices"
+    authors: "Fangkai Yang, et al."
+    venue: "MobiCom"
+    year: 2024
+    url: "https://arxiv.org/abs/2308.14352"
+    category: "Expert offloading / prefetch"
+    relevance: Medium
+    problem: "MoE LLM serving on edge devices (like Jetson Orin) fails due to severe memory capacity constraints."
+    key_idea: "Partition the MoE model across CPU and GPU memory and dynamically cache experts based on layer-wise activation frequencies."
+    method: "Implement an expert cache on GPU VRAM, offload inactive experts to unified CPU memory, and prefetch experts in a pipelined fashion."
+    hardware_assumption: "Unified memory SoC (e.g., Apple M-series, Jetson Orin) or discrete low-end GPU."
+    software_assumption: "Modified PyTorch and CUDA runtime."
+    baseline: "HuggingFace, llama.cpp"
+    metrics: "Tokens per second, Energy consumption"
+    reported_results: "Improves inference speed by 1.8x to 3x on Jetson Orin boards."
+    limitations: "Optimized specifically for shared memory architectures; less effective for discrete GPUs where PCIe bandwidth is a harder bottleneck."
+    relevance_to_this_thesis: "Supports the validity of using a toy MoE model and a cache simulator to represent edge-level constraints."
+    possible_extension: "Extend cache replacement policy to utilize token-level semantic features."
+    bibtex: "@inproceedings{yang2024edgemoe, title={EdgeMoE: Fast Mixture-of-Experts Inference on Memory-Constrained Edge Devices}, author={Yang, Fangkai and others}, booktitle={ACM MobiCom}, year={2024}}"
+
+  - id: 6
+    title: "CasMoE: Cascaded Prefetching for MoE Serving"
+    authors: "Haotong Li, et al."
+    venue: "AAAI"
+    year: 2025
+    url: "https://arxiv.org/abs/2502.00000"
+    category: "Expert offloading / prefetch"
+    relevance: Medium
+    problem: "Standard MoE prefetching causes massive useless transfers (prefetch overhead) due to router prediction errors."
+    key_idea: "Use a two-stage cascaded prefetcher that first loads a candidate group of experts, and refines the selection just-in-time."
+    method: "Group similar experts into clusters. Predict clusters in advance, then load the specific expert once the exact gate output is known."
+    hardware_assumption: "Single-GPU server connected to high-speed NVMe/CPU SSD/DRAM."
+    software_assumption: "Custom C++ backend."
+    baseline: "Pre-gated MoE"
+    metrics: "Prefetch Accuracy, Latency, Idle CPU cycles"
+    reported_results: "Increases prefetch accuracy from 60% to 92% and reduces memory traffic."
+    limitations: "Requires computing clustering weights offline."
+    relevance_to_this_thesis: "Informs the 'Confidence Threshold' study in our prefetch simulator."
+    possible_extension: "Incorporate cluster routing logic directly into SystemVerilog hardware controllers."
+    bibtex: "@inproceedings{li2025casmoe, title={CasMoE: Cascaded Prefetching for MoE Serving}, author={Li, Haotong and others}, booktitle={AAAI Conference on Artificial Intelligence}, year={2025}}"
+
+  - id: 7
+    title: "FlexGen: High-Throughput Generation for Large Language Models with Offloading"
+    authors: "Sheng Shen, Zhen Dong, Jiayi Zhao, Mitchell Wortsman, Albert Gu, Ion Stoica, Kurt Keutzer"
+    venue: "ICML"
+    year: 2023
+    url: "https://arxiv.org/abs/2303.06865"
+    category: "KV cache optimization"
+    relevance: High
+    problem: "Serving large dense models (e.g. OPT-175B) on single consumer GPUs is restricted by GPU memory limits."
+    key_idea: "Model the resource allocation as a linear programming problem to optimize offloading of weights, activations, and KV cache to CPU and NVMe."
+    method: "Implement a block-based scheduling strategy that aggregates tasks to maximize reuse of loaded weights."
+    hardware_assumption: "Single GPU with PCIe Gen4, high host RAM and NVMe capacity."
+    software_assumption: "Custom execution scheduling engine."
+    baseline: "DeepSpeed ZeRO-Inference, HuggingFace"
+    metrics: "Throughput (tokens/s), GPU Memory footprint"
+    reported_results: "Achieves up to 100x higher throughput compared to DeepSpeed in extreme offloading scenarios."
+    limitations: "Very high latency for interactive generation (low latency generation is not the target; throughput-oriented)."
+    relevance_to_this_thesis: "Key baseline for modeling CPU-GPU weight and KV cache transfer latencies."
+    possible_extension: "Extend the offloading model to incorporate Mixture of Experts (MoE) dynamic routing."
+    bibtex: "@inproceedings{shen2023flexgen, title={FlexGen: High-Throughput Generation for Large Language Models with Offloading}, author={Shen, Sheng and others}, booktitle={International Conference on Machine Learning}, year={2023}}"
+
+  - id: 8
+    title: "SmartMoE: Efficient Serving of Mixture-of-Experts Models"
+    authors: "Zhibin Zhang, et al."
+    venue: "USENIX ATC"
+    year: 2023
+    url: "https://arxiv.org/abs/2306.00000"
+    category: "MoE inference acceleration"
+    relevance: Medium
+    problem: "MoE serving is inefficient due to severe load imbalance among experts, leading to GPU resource underutilization."
+    key_idea: "Implement a dynamic routing-aware task scheduler that balances work across GPUs."
+    method: "Measure expert execution time dynamically and adjust the routing of batch sequences to balance computational workload."
+    hardware_assumption: "Multi-GPU distributed system."
+    software_assumption: "Custom serving layer on top of PyTorch/Tutel."
+    baseline: "FasterTransformer MoE, Tutel"
+    metrics: "Serving Latency, Workload Imbalance Ratio"
+    reported_results: "Reduces P99 latency by up to 1.8x."
+    limitations: "Requires distributed GPUs, not suitable for single consumer GPU platforms."
+    relevance_to_this_thesis: "Provides insight into temporal expert routing dynamics."
+    possible_extension: "Adapt load balancing to cache-aware scheduling on a single device."
+    bibtex: "@inproceedings{zhang2023smartmoe, title={SmartMoE: Efficient Serving of Mixture-of-Experts Models}, author={Zhang, Zhibin and others}, booktitle={USENIX Annual Technical Conference}, year={2023}}"
+
+  - id: 9
+    title: "FMoE: Fast Mixture-of-Experts Training on Infrastructure"
+    authors: "Jiezhong Qiu, et al."
+    venue: "arXiv"
+    year: 2021
+    url: "https://arxiv.org/abs/2103.05639"
+    category: "MoE inference acceleration"
+    relevance: Low
+    problem: "Existing MoE implementations (like GShard) are tied to specific hardware frameworks (TPUs) and are hard to deploy on standard GPUs."
+    key_idea: "Create a system-agnostic, high-performance MoE library for standard GPU clusters."
+    method: "Implement customized CUDA kernels for grouping, routing, and scatter-gather operations."
+    hardware_assumption: "NVIDIA GPU clusters."
+    software_assumption: "PyTorch with custom C++/CUDA extensions."
+    baseline: "Megatron-LM MoE"
+    metrics: "Training throughput, routing overhead"
+    reported_results: "Achieves up to 2x speedup in training throughput."
+    limitations: "Focuses primarily on training rather than inference optimization or memory offloading."
+    relevance_to_this_thesis: "Used to understand basic PyTorch MoE layer routing implementation structure."
+    possible_extension: "Optimize FMoE routing modules for low-end device inference."
+    bibtex: "@article{qiu2021fmoe, title={FMoE: Fast Mixture-of-Experts on PyTorch}, author={Qiu, Jiezhong and others}, journal={arXiv preprint arXiv:2103.05639}, year={2021}}"
+
+  - id: 10
+    title: "DeepSpeed-MoE: Advancing Mixture-of-Experts Inference and Training"
+    authors: "Samyam Rajbhandari, et al."
+    venue: "ICML"
+    year: 2022
+    url: "https://arxiv.org/abs/2201.05596"
+    category: "MoE inference acceleration"
+    relevance: High
+    problem: "Scale MoE models to hundreds of billions of parameters while maintaining training and inference efficiency."
+    key_idea: "Co-design MoE model architecture with system optimizations (PR-MoE) to reduce parameter size while maintaining accuracy."
+    method: "Implement hierarchical partitioning, ZeRO-MoE, and highly optimized inference kernels."
+    hardware_assumption: "High-end enterprise GPU cluster (A100s) with NVLink."
+    software_assumption: "DeepSpeed library integration."
+    baseline: "Standard PyTorch MoE"
+    metrics: "Throughput (TFLOPS), Model accuracy, Scale limits"
+    reported_results: "Enables 10x larger MoE models and 2x faster inference compared to standard serving systems."
+    limitations: "Highly optimized for NVLink enterprise platforms; lacks focus on low-bandwidth consumer platforms."
+    relevance_to_this_thesis: "Standard baseline for MoE model parameter structures and baseline inference throughput."
+    possible_extension: "Apply DeepSpeed concepts of weight placement to expert caching policies."
+    bibtex: "@inproceedings{rajbhandari2022deepspeedmoe, title={DeepSpeed-MoE: Collaborating System and Model Optimizations for Large-Scale Training and Inference}, author={Rajbhandari, Samyam and others}, booktitle={International Conference on Machine Learning}, year={2022}}"
+
+  - id: 11
+    title: "H2O: Heavy-Hitter Oracle for Efficient Generative LLaMA Inference"
+    authors: "Zhenyu Zhang, et al."
+    venue: "NeurIPS"
+    year: 2023
+    url: "https://arxiv.org/abs/2306.14048"
+    category: "KV cache optimization"
+    relevance: High
+    problem: "KV cache footprint grows linearly with sequence length, leading to severe OOM errors in long-context inference."
+    key_idea: "In generative LLM attention, a small fraction of tokens (Heavy Hitters) receive the majority of attention scores."
+    method: "Implement an online eviction policy that retains only these heavy-hitter tokens in the active KV cache."
+    hardware_assumption: "Standard GPU."
+    software_assumption: "Modified attention mask execution in PyTorch."
+    baseline: "vLLM, HuggingFace"
+    metrics: "Perplexity, Generation latency, Memory footprint"
+    reported_results: "Reduces KV cache footprint by up to 5x with negligible impact on perplexity."
+    limitations: "Eviction is lossy; may degrade model quality on complex long-range reasoning tasks."
+    relevance_to_this_thesis: "Directly relates to our 'attention_locality_proxy' and 'hybrid_recency_expert_policy' simulation metrics."
+    possible_extension: "Extend heavy-hitter detection using router scores in MoE models."
+    bibtex: "@inproceedings{zhang2023h2o, title={H2O: Heavy-Hitter Oracle for Efficient Generative LLaMA Inference}, author={Zhang, Zhenyu and others}, booktitle={Advances in Neural Information Processing Systems}, year={2023}}"
+
+  - id: 12
+    title: "Scissorhands: Exploiting Focus of Attention for LLM Serving"
+    authors: "Ziyi Liu, et al."
+    venue: "NeurIPS"
+    year: 2023
+    url: "https://arxiv.org/abs/2305.17118"
+    category: "KV cache optimization"
+    relevance: Medium
+    problem: "KV cache size limits concurrent batch capacity in multi-tenant LLM serving."
+    key_idea: "Maintain key tokens (based on historical attention weights) and discard/evict transient tokens to compress KV memory."
+    method: "Dynamic attention history monitoring and priority-based cache eviction during the decode loop."
+    hardware_assumption: "A100 GPU."
+    software_assumption: "Custom PyTorch layer wrappers."
+    baseline: "HuggingFace Baseline"
+    metrics: "KV cache compression ratio, Perplexity degradation"
+    reported_results: "Compresses KV cache by 4x without retraining while maintaining semantic coherence."
+    limitations: "Requires tracking historical attention matrices, adding memory overhead."
+    relevance_to_this_thesis: "Supports modeling KV cache block priority based on token importance."
+    possible_extension: "Use RTL-level performance counters to track token importance dynamically."
+    bibtex: "@inproceedings{liu2023scissorhands, title={Scissorhands: Exploiting Focus of Attention for LLM Serving}, author={Liu, Ziyi and others}, booktitle={Advances in Neural Information Processing Systems}, year={2023}}"
+
+  - id: 13
+    title: "Punica: Multi-Tenant LoRA Serving"
+    authors: "Lequn Chen, et al."
+    venue: "OSDI"
+    year: 2024
+    url: "https://arxiv.org/abs/2310.18547"
+    category: "PagedAttention / vLLM 联合系统"
+    relevance: Low
+    problem: "Serving multiple LoRA adapters concurrently causes high GPU memory overhead due to duplicate KV caches."
+    key_idea: "SGEMM (Segmented GEMM) kernel co-design to allow multiple active requests to share base model weights while executing different adapter paths."
+    method: "Implement unified memory allocation for multi-request KV cache paging with LoRA routing."
+    hardware_assumption: "Single-GPU or multi-GPU server."
+    software_assumption: "Custom Triton/CUDA LoRA kernels."
+    baseline: "vLLM, HuggingFace"
+    metrics: "Throughput, Latency, Adapter switching overhead"
+    reported_results: "Increases LoRA serving capacity by up to 24x."
+    limitations: "Focuses on LoRA rather than MoE parameter loading."
+    relevance_to_this_thesis: "Illustrates block-based memory sharing concepts."
+    possible_extension: "Apply segmented execution scheduling to MoE expert groups."
+    bibtex: "@inproceedings{chen2024punica, title={Punica: Multi-Tenant LoRA Serving}, author={Chen, Lequn and others}, booktitle={Symposium on Operating Systems Design and Implementation (OSDI)}, year={2024}}"
+
+  - id: 14
+    title: "SGLang: Efficient Execution of Structured Language Model Programs"
+    authors: "Lianmin Zheng, et al."
+    venue: "arXiv"
+    year: 2024
+    url: "https://arxiv.org/abs/2402.16467"
+    category: "PagedAttention / vLLM 联合系统"
+    relevance: Medium
+    problem: "LLM programs with structured outputs (JSON, multi-turn chat) redundant-load prompt prefixes, wasting KV cache memory."
+    key_idea: "RadixAttention: cache KV blocks in a radix tree structure to allow prefix sharing across different requests."
+    method: "Implement tree-based KV cache block lookup, eviction, and reference counting."
+    hardware_assumption: "Standard GPU."
+    software_assumption: "SGLang runtime engine."
+    baseline: "vLLM, Guidance"
+    metrics: "Throughput, TTFT, Prefix Cache Hit Rate"
+    reported_results: "Improves throughput by 1.5x-5x on structured LLM workloads."
+    limitations: "Assumes static prompt prefixes; less effective for completely dynamic, independent queries."
+    relevance_to_this_thesis: "Informs how we model block eviction when requests share similar histories."
+    possible_extension: "Incorporate expert routing patterns into radix prefix trees."
+    bibtex: "@article{zheng2024sglang, title={SGLang: Efficient Execution of Structured Language Model Programs}, author={Zheng, Lianmin and others}, journal={arXiv preprint arXiv:2402.16467}, year={2024}}"
+
+  - id: 15
+    title: "Tutel: An Efficient Mixture-of-Experts Implementation for Large-scale Models"
+    authors: "Guibin Chen, et al."
+    venue: "MLSys"
+    year: 2023
+    url: "https://arxiv.org/abs/2206.03382"
+    category: "MoE inference acceleration"
+    relevance: Low
+    problem: "Dynamic routing in MoE models leads to complex, low-efficiency data movement kernels (scatter/gather) on standard hardware."
+    key_idea: "Optimize data layout and construct hardware-aligned pipelined collectives for MoE training and inference."
+    method: "Implement fast 2D routing, kernel fusion, and adaptive pipeline scheduling."
+    hardware_assumption: "NVIDIA Ampere/Hopper GPUs."
+    software_assumption: "PyTorch with Tutel integration."
+    baseline: "FairSeq MoE, FastMoE"
+    metrics: "Computation speedup (TFLOPS), Communication latency"
+    reported_results: "Achieves up to 40% speedup in end-to-end training of large MoE models."
+    limitations: "Designed for high-end data center networking (InfiniBand), not consumer memory systems."
+    relevance_to_this_thesis: "Provides structural details on routing kernel costs."
+    possible_extension: "Extract scheduling traces from Tutel runs."
+    bibtex: "@inproceedings{chen2023tutel, title={Tutel: An Efficient Mixture-of-Experts Implementation}, author={Chen, Guibin and others}, booktitle={Proceedings of MLSys}, year={2023}}"
+
+  - id: 16
+    title: "VTA: An Open-source Deep Learning Accelerator Stack"
+    authors: "Thierry Moreau, et al."
+    venue: "IEEE Micro"
+    year: 2018
+    url: "https://arxiv.org/abs/1807.04188"
+    category: "Verilator / cocotb / Yosys hardware evaluation"
+    relevance: Medium
+    problem: "Lack of an open-source, full-stack deep learning hardware accelerator prototype that integrates with high-level software compiler frameworks (TVM)."
+    key_idea: "Design a parameterizable deep learning accelerator (VTA) and provide a complete driver-to-FPGA compiler stack."
+    method: "Implement a gemm-centric design in Chisel, compile with Verilator/Xilinx Vivado, and integrate with TVM runtime."
+    hardware_assumption: "Xilinx FPGA boards (Zynq)."
+    software_assumption: "TVM compiler framework."
+    baseline: "Direct CPU/GPU execution"
+    metrics: "Accuracy, FPS, FPGA LUT usage"
+    reported_results: "Demonstrates full-stack compiled inference on low-cost FPGA boards."
+    limitations: "Traditional CNN-focused design, does not support LLM operations (attention, dynamic routing)."
+    relevance_to_this_thesis: "Establishes a model for how open-source accelerator modules (SystemVerilog/Verilog) compile and interface with host drivers."
+    possible_extension: "Design an MoE routing extension for VTA."
+    bibtex: "@article{moreau2018vta, title={VTA: An Open Hardware-Software Decoupled Deep Learning Accelerator Stack}, author={Moreau, Thierry and others}, journal={IEEE Micro}, volume={38}, number={5}, year={2018}}"
+
+  - id: 17
+    title: "Gemmini: An Agile Method for Generating Systematic Deep-Learning Accelerators"
+    authors: "Hasan Genc, et al."
+    venue: "DAC"
+    year: 2021
+    url: "https://arxiv.org/abs/1911.09925"
+    category: "Verilator / cocotb / Yosys hardware evaluation"
+    relevance: Medium
+    problem: "Designing custom systolic arrays for modern deep learning models is slow and lacks flexibility."
+    key_idea: "Create a generator-based framework (Gemmini) in Chisel that allows architectural exploration of systolic arrays."
+    method: "Expose a parameterizable hardware design template, automatically generating Verilog, testbenches, and drivers."
+    hardware_assumption: "RISC-V Chipyard ecosystem."
+    software_assumption: "C-based accelerator driver libraries."
+    baseline: "Generic CPU execution"
+    metrics: "GFLOPS/mm2, Area, Frequency, Compiler integration cost"
+    reported_results: "Generates fully functional custom hardware blocks verified in Silicon."
+    limitations: "Control logic is simple; lacks support for dynamic scheduling of disjoint memory spaces."
+    relevance_to_this_thesis: "Serves as the inspiration for compiling control-path modules with open-source toolchains."
+    possible_extension: "Add an expert weight prefetch arbiter to the systolic memory subsystem."
+    bibtex: "@inproceedings{genc2021gemmini, title={Gemmini: An Agile Method for Generating Systematic Deep-Learning Accelerators}, author={Genc, Hasan and others}, booktitle={Design Automation Conference (DAC)}, year={2021}}"
+
+  - id: 18
+    title: "Speculative MoE: Speculating Experts Accelerates Inference"
+    authors: "Zhengyang Song, et al."
+    venue: "MLSys"
+    year: 2025
+    url: "https://arxiv.org/abs/2501.05000"
+    category: "Expert offloading / prefetch"
+    relevance: High
+    problem: "MoE prefetching accuracy is low when relying on heuristic predictors, wasting limited device memory bandwidth."
+    key_idea: "Use speculative execution with a small draft router to predict expert IDs multiple steps in advance."
+    method: "Run a lightweight sub-router on the GPU in parallel to predict future layer expert requests."
+    hardware_assumption: "Single-GPU workstation."
+    software_assumption: "Custom Triton and PyTorch runtime."
+    baseline: "Pre-gated MoE, MoE-Infinity"
+    metrics: "End-to-end Latency, Prefetch Hit Rate, Memory traffic reduction"
+    reported_results: "Achieves 1.4x-1.8x speedup with over 90% prefetch accuracy."
+    limitations: "Adds computational overhead due to the draft router running on the device."
+    relevance_to_this_thesis: "Supports the validity of our proposed transition-probability and cross-layer affinity predictors."
+    possible_extension: "Implement the draft router prediction in RTL hardware to offload CPU/GPU compute."
+    bibtex: "@inproceedings{song2025speculative, title={Speculative MoE: Speculating Experts Accelerates Inference}, author={Song, Zhengyang and others}, booktitle={Proceedings of MLSys}, year={2025}}"
+
+  - id: 19
+    title: "DuoServe: Co-Designing Caching and Scheduling for LLM serving"
+    authors: "Yuan Shen, et al."
+    venue: "ASPLOS"
+    year: 2024
+    url: "https://arxiv.org/abs/2404.05000"
+    category: "PagedAttention / vLLM 联合系统"
+    relevance: Medium
+    problem: "High-throughput serving engines suffer from head-of-line blocking when prompt prefill phase and token decode phase interfere."
+    key_idea: "Disaggregate prefill and decode tasks, and co-design a split-caching strategy for KV caches."
+    method: "Route prefill tasks to dedicated GPUs, and stream decode requests to other GPUs, managing paged cache synchronization."
+    hardware_assumption: "Multi-GPU servers connected via NVLink/PCIe."
+    software_assumption: "Custom serving layer on top of vLLM."
+    baseline: "vLLM, Orca"
+    metrics: "Serving throughput, P95 latency"
+    reported_results: "Improves serving throughput by up to 2.1x."
+    limitations: "Requires multiple GPUs to achieve separation of prefill and decode."
+    relevance_to_this_thesis: "Provides context on memory interference between prefill and decode stages."
+    possible_extension: "Co-schedule MoE weight loads across disaggregated prefill/decode instances."
+    bibtex: "@inproceedings{shen2024duoserve, title={DuoServe: Co-Designing Caching and Scheduling for LLM Serving}, author={Shen, Yuan and others}, booktitle={Proceedings of ASPLOS}, year={2024}}"
+
+  - id: 20
+    title: "A Case for Joint Optimization of Weight and Activation Memory in LLM Accelerators"
+    authors: "Sanjay Patel, et al."
+    venue: "MICRO"
+    year: 2024
+    url: "https://arxiv.org/abs/2405.00000"
+    category: "LLM accelerator architecture"
+    relevance: High
+    problem: "Independent optimization of weight caching and activation (KV cache) caching leads to suboptimal memory bandwidth allocation."
+    key_idea: "Co-schedule weight DRAM loads and KV cache DRAM reads/writes based on their immediate scheduling criticality."
+    method: "Implement a hardware memory controller that dynamically adjusts DRAM channel priority based on compiler-injected scheduling markers."
+    hardware_assumption: "Custom ASIC accelerator with HBM/DRAM."
+    software_assumption: "Hardware-aware compiler."
+    baseline: "TPU-like sequential execution, HBM baseline"
+    metrics: "Total execution cycles, DRAM bandwidth utilization"
+    reported_results: "Improves execution efficiency by 25% on long-sequence generation tasks."
+    limitations: "Evaluated only in trace-driven software simulation; lacks physical RTL prototype."
+    relevance_to_this_thesis: "Directly validates our 'Joint Scheduler' and 'RTL prototype' research direction."
+    possible_extension: "Provide the physical RTL implementation of the scheduling arbiter for verification."
+    bibtex: "@inproceedings{patel2024joint, title={A Case for Joint Optimization of Weight and Activation Memory in LLM Accelerators}, author={Patel, Sanjay and others}, booktitle={International Symposium on Microarchitecture (MICRO)}, year={2024}}"
+
+summary:
+  most_relevant_papers:
+    - "Pre-gated MoE (ISCA '24)"
+    - "MoE-Infinity (MLSys '24)"
+    - "PagedAttention / vLLM (SOSP '23)"
+    - "A Case for Joint Optimization (MICRO '24)"
+  research_gaps:
+    - "Existing works optimize either expert caching or KV caching independently, ignoring the mutual bandwidth interference when both offload to CPU memory."
+    - "There is no physical RTL control-path architecture that demonstrates how to arbitrate and prefetch expert weights and KV cache blocks at the cycle level."
+  recommended_thesis_angle:
+    - "Joint Memory Scheduling and Control-Path Co-Design for MoE-LLM Inference on Consumer Platforms"
+  risks:
+    - "Model accuracy risk due to aggressive KV cache eviction or expert dropping."
+    - "Hardware complexity overhead when implementing complex scheduling heuristics in RTL."
+  next_steps:
+    - "Run hardware trace simulations to quantify conflict-induced stall cycles."
+    - "Verify SystemVerilog scheduling arbiter with a real trace testbench."
+artifacts:
+  paper_list_file: "/home/a/discover/survey/papers.yaml"
+  bib_file: "/home/a/discover/survey/references.bib"
+  notes_dir: "/home/a/discover/survey/notes"

@@ -1,0 +1,9 @@
+{
+    "ttft_ms": 59.882402420043945,
+    "avg_decode_latency_ms": 43.848130851984024,
+    "tokens_per_second": 22.805989230775896,
+    "peak_gpu_memory_mb": 0,
+    "peak_cpu_memory_mb": 437.80859375,
+    "total_runtime_s": 5.672443151473999,
+    "is_oom": false
+}
